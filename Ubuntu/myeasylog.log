@@ -1,0 +1,607 @@
+2021-01-03 17:28:43,983 [main thread] Number Of AMD GPUs: 1
+2021-01-03 17:28:43,984 [main thread] Using configuration file ./config.json
+2021-01-03 17:28:43,992 [main thread] Block getting URL:
+   http://88.198.13.202:9052/mining/candidate
+2021-01-03 17:28:43,992 [main thread] Solution posting URL:
+   http://88.198.13.202:9052/mining/solution
+2021-01-03 17:28:43,993 [main thread] Generated public key:
+      pkHex = 0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380
+2021-01-03 17:28:43,995 [main thread] Start Gpu 0
+2021-01-03 17:28:44,995 [PoolSender thread] Gpu 0Started
+2021-01-03 17:28:44,996 [PoolSender thread] GPU 0 mem_size: 7976  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-03 17:28:44,996 [PoolSender thread] GPU 0 allocating memory
+2021-01-03 17:28:45,248 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "819751A52802100289C34616A9A6E39845B0E136FEAE6FE8B789306C72DA1969",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 1080,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-03 17:29:11,240 [PoolSender thread] GPU 0 read new block data
+2021-01-03 17:29:19,542 [PoolSender thread] Some of expected fields not present in /block/candidate
+2021-01-03 17:29:19,543 [PoolSender thread] Block data: THERE WAS AN INTERNAL SERVER ERROR.
+2021-01-03 17:29:19,543 [PoolSender thread] Getting block error
+2021-01-03 17:29:19,844 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "347EC58DCDF81227AE76130F985475A8397B72EC7037844EAF0BCF0EC7E1E488",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 1081,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-03 17:29:44,810 [PoolSender thread] GPU 0 blockId != info->blockId.load 
+2021-01-03 17:29:44,813 [PoolSender thread] GPU 0 read new block data
+2021-01-03 17:29:46,416 [PoolSender thread] Average curling time 251.98 ms
+2021-01-03 17:29:46,416 [PoolSender thread] Current block candidate: {
+  "MSG" : "347EC58DCDF81227AE76130F985475A8397B72EC7037844EAF0BCF0EC7E1E488",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 1081,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-03 17:29:46,416 [PoolSender thread] Average hashrates: GPU0 -1 MH/s Total -1 MH/s 
+2021-01-03 17:52:08,418 [main thread] Number Of AMD GPUs: 1
+2021-01-03 17:52:08,418 [main thread] Using configuration file ./config.json
+2021-01-03 17:52:08,428 [main thread] Block getting URL:
+   http://37.156.20.158:9052/mining/candidate
+2021-01-03 17:52:08,428 [main thread] Solution posting URL:
+   http://37.156.20.158:9052/mining/solution
+2021-01-03 17:52:08,429 [main thread] Generated public key:
+      pkHex = 03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A
+2021-01-03 17:52:08,430 [main thread] Start Gpu 0
+2021-01-03 17:52:09,431 [PoolSender thread] Gpu 0Started
+2021-01-03 17:52:09,431 [PoolSender thread] GPU 0 mem_size: 7955  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-03 17:52:09,431 [PoolSender thread] GPU 0 allocating memory
+2021-01-03 17:52:09,563 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "C8FB86D181057496082972B97FC9733712ECB2BC867F9F1DBABA332B12CDDA7B",
+  "B" : 115792089237316195423570985008687907852837564279074904382605163141518161494337,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 17:54:26,671 [main thread] Number Of AMD GPUs: 1
+2021-01-03 17:54:26,671 [main thread] Using configuration file ./config.json
+2021-01-03 17:54:26,675 [main thread] Block getting URL:
+   http://37.156.20.158:9052/mining/candidate
+2021-01-03 17:54:26,676 [main thread] Solution posting URL:
+   http://37.156.20.158:9052/mining/solution
+2021-01-03 17:54:26,677 [main thread] Generated public key:
+      pkHex = 03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A
+2021-01-03 17:54:26,679 [main thread] Start Gpu 0
+2021-01-03 17:54:27,680 [PoolSender thread] Gpu 0Started
+2021-01-03 17:54:27,680 [PoolSender thread] GPU 0 mem_size: 7954  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-03 17:54:27,680 [PoolSender thread] GPU 0 allocating memory
+2021-01-03 17:54:27,797 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "C8FB86D181057496082972B97FC9733712ECB2BC867F9F1DBABA332B12CDDA7B",
+  "B" : 115792089237316195423570985008687907852837564279074904382605163141518161494337,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 17:55:01,170 [main thread] Number Of AMD GPUs: 1
+2021-01-03 17:55:01,171 [main thread] Using configuration file ./config.json
+2021-01-03 17:55:01,181 [main thread] Block getting URL:
+   http://88.198.13.202:9052/mining/candidate
+2021-01-03 17:55:01,181 [main thread] Solution posting URL:
+   http://88.198.13.202:9052/mining/solution
+2021-01-03 17:55:01,183 [main thread] Generated public key:
+      pkHex = 0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380
+2021-01-03 17:55:01,185 [main thread] Start Gpu 0
+2021-01-03 17:55:02,185 [PoolSender thread] Gpu 0Started
+2021-01-03 17:55:02,186 [PoolSender thread] GPU 0 mem_size: 7955  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-03 17:55:02,186 [PoolSender thread] GPU 0 allocating memory
+2021-01-03 17:55:02,438 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "94241CDCAEE47EABA8C5F3734AA5159C8D63F6178D221CA835627749471B5922",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 1140,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-03 17:55:28,079 [PoolSender thread] GPU 0 read new block data
+2021-01-03 17:56:01,555 [PoolSender thread] solution found
+2021-01-03 17:56:01,555 [PoolSender thread] GPU 0 found and trying to POST a solution:
+   nonce = 0x0000000000000A63
+       d = 0x6E4935491FE22E8A FB8910EECB86A084 31617550F05302AA 8CC7D935D3167710
+2021-01-03 17:56:01,556 [PoolSender thread] POST request {"pk":"0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380","w":"032864B1014ECF0499E1248C5AEF062507A81DAF92E535F4CBD2DFC76860DEB549","n":"0000000000000A63","d":49883760943878338219774304137655552878675398494723979864713515363656411805456e0}
+2021-01-03 17:56:01,815 [PoolSender thread] Node response:{
+  
+}
+2021-01-03 17:56:01,905 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "3430C46CCF81B1135033E13F48A8DE83931EFAC5AA43D6F3B0F70F8D3CAE9D43",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 1141,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-03 17:56:01,906 [PoolSender thread] GPU 0 read new block data
+2021-01-03 17:56:35,437 [PoolSender thread] solution found
+2021-01-03 17:56:35,437 [PoolSender thread] GPU 0 found and trying to POST a solution:
+   nonce = 0x000000000000032B
+       d = 0x0A43FDEB38B7470E 521B45C6DDFFE611 5F87AE03D66A43FB BED39D3014C1350E
+2021-01-03 17:56:35,438 [PoolSender thread] POST request {"pk":"0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380","w":"03401B60806EBF27A9434580F2C628AFEB4D1C0E52C898C30DED4E255F1E99BF86","n":"000000000000032B","d":4643259722558904776284355932119339107846425275140429591247287049407028081934e0}
+2021-01-03 17:56:36,800 [PoolSender thread] CURL: Timeout was reached
+2021-01-03 17:56:36,800 [PoolSender thread] Getting block error
+2021-01-03 17:56:37,875 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:37,876 [PoolSender thread] Getting block error
+2021-01-03 17:56:37,926 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:37,927 [PoolSender thread] Getting block error
+2021-01-03 17:56:37,977 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:37,977 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,028 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,028 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,079 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,079 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,130 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,130 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,181 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,181 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,231 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,232 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,282 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,282 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,333 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,333 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,384 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,384 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,435 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,435 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,485 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,485 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,488 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,489 [PoolSender thread] Node response:
+2021-01-03 17:56:38,536 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,536 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,587 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,587 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,638 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,638 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,688 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,689 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,739 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,740 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,790 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,790 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,841 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,841 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,892 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,892 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,943 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,943 [PoolSender thread] Getting block error
+2021-01-03 17:56:38,994 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:38,994 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,044 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,045 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,095 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,095 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,146 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,146 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,197 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,197 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,248 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,248 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,299 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,299 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,349 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,350 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,400 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,400 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,451 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,451 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,502 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,502 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,553 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,553 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,603 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,604 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,654 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,655 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,705 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,705 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,756 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,756 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,807 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,807 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,858 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,858 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,909 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,909 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,959 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:39,960 [PoolSender thread] Getting block error
+2021-01-03 17:56:39,960 [PoolSender thread] Average curling time 433.715 ms
+2021-01-03 17:56:39,960 [PoolSender thread] Current block candidate: {
+  "MSG" : "3430C46CCF81B1135033E13F48A8DE83931EFAC5AA43D6F3B0F70F8D3CAE9D43",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 1141,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-03 17:56:39,960 [PoolSender thread] Average hashrates: GPU0 -1 MH/s Total -1 MH/s 
+2021-01-03 17:56:40,011 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:40,011 [PoolSender thread] Getting block error
+2021-01-03 17:56:40,061 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:40,062 [PoolSender thread] Getting block error
+2021-01-03 17:56:40,112 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:40,112 [PoolSender thread] Getting block error
+2021-01-03 17:56:40,588 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:40,588 [PoolSender thread] Getting block error
+2021-01-03 17:56:40,639 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:40,639 [PoolSender thread] Getting block error
+2021-01-03 17:56:40,690 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:40,690 [PoolSender thread] Getting block error
+2021-01-03 17:56:41,116 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:41,117 [PoolSender thread] Getting block error
+2021-01-03 17:56:41,429 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:41,429 [PoolSender thread] Getting block error
+2021-01-03 17:56:41,927 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:41,927 [PoolSender thread] Getting block error
+2021-01-03 17:56:42,425 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:42,425 [PoolSender thread] Getting block error
+2021-01-03 17:56:42,923 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:42,923 [PoolSender thread] Getting block error
+2021-01-03 17:56:43,421 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:43,421 [PoolSender thread] Getting block error
+2021-01-03 17:56:43,919 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:43,919 [PoolSender thread] Getting block error
+2021-01-03 17:56:44,417 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:44,417 [PoolSender thread] Getting block error
+2021-01-03 17:56:44,915 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:44,915 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,151 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,151 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,207 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,207 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,258 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,258 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,309 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,309 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,366 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,367 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,417 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,417 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,468 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,468 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,526 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,526 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,577 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,577 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,628 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,628 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,685 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,685 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,736 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,736 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,787 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,787 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,837 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,838 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,888 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,888 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,939 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,939 [PoolSender thread] Getting block error
+2021-01-03 17:56:45,990 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:45,990 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,041 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,041 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,092 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,092 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,142 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,143 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,193 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,193 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,244 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,244 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,295 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,295 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,345 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,346 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,396 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,396 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,447 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,447 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,498 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,498 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,549 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,549 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,600 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,600 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,650 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,651 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,701 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,701 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,752 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,752 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,803 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,803 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,854 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,854 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,905 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,905 [PoolSender thread] Getting block error
+2021-01-03 17:56:46,955 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:46,956 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,006 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,007 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,057 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,057 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,108 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,108 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,159 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,159 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,210 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,210 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,261 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,261 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,311 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,312 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,362 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,362 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,413 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,413 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,464 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,464 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,515 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,515 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,566 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,566 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,617 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,617 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,667 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,668 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,718 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,718 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,769 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,769 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,820 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,820 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,871 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,871 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,922 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,922 [PoolSender thread] Getting block error
+2021-01-03 17:56:47,973 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:47,973 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,023 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,023 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,074 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,074 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,125 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,125 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,176 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,176 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,227 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,227 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,277 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,278 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,328 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,328 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,379 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,379 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,430 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,430 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,481 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,481 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,532 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,532 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,583 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,583 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,633 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,633 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,684 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,684 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,735 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,735 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,790 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,790 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,840 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,841 [PoolSender thread] Getting block error
+2021-01-03 17:56:48,891 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:48,891 [PoolSender thread] Getting block error
+2021-01-03 17:56:49,397 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:49,397 [PoolSender thread] Getting block error
+2021-01-03 17:56:49,895 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:49,895 [PoolSender thread] Getting block error
+2021-01-03 17:56:50,393 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:50,393 [PoolSender thread] Getting block error
+2021-01-03 17:56:50,891 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:50,891 [PoolSender thread] Getting block error
+2021-01-03 17:56:51,389 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:51,389 [PoolSender thread] Getting block error
+2021-01-03 17:56:51,887 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:51,887 [PoolSender thread] Getting block error
+2021-01-03 17:56:52,385 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:52,385 [PoolSender thread] Getting block error
+2021-01-03 17:56:52,883 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:52,883 [PoolSender thread] Getting block error
+2021-01-03 17:56:53,381 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:53,381 [PoolSender thread] Getting block error
+2021-01-03 17:56:53,879 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:53,879 [PoolSender thread] Getting block error
+2021-01-03 17:56:54,377 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:54,377 [PoolSender thread] Getting block error
+2021-01-03 17:56:54,875 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:54,875 [PoolSender thread] Getting block error
+2021-01-03 17:56:55,373 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:55,373 [PoolSender thread] Getting block error
+2021-01-03 17:56:55,871 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:55,871 [PoolSender thread] Getting block error
+2021-01-03 17:56:56,369 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:56,369 [PoolSender thread] Getting block error
+2021-01-03 17:56:56,867 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:56,867 [PoolSender thread] Getting block error
+2021-01-03 17:56:57,365 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:57,365 [PoolSender thread] Getting block error
+2021-01-03 17:56:57,863 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:57,863 [PoolSender thread] Getting block error
+2021-01-03 17:56:58,361 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:58,361 [PoolSender thread] Getting block error
+2021-01-03 17:56:58,859 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:58,859 [PoolSender thread] Getting block error
+2021-01-03 17:56:59,357 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:59,357 [PoolSender thread] Getting block error
+2021-01-03 17:56:59,855 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:56:59,855 [PoolSender thread] Getting block error
+2021-01-03 17:57:00,353 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:00,353 [PoolSender thread] Getting block error
+2021-01-03 17:57:00,851 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:00,851 [PoolSender thread] Getting block error
+2021-01-03 17:57:01,500 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:01,500 [PoolSender thread] Getting block error
+2021-01-03 17:57:01,847 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:01,847 [PoolSender thread] Getting block error
+2021-01-03 17:57:02,345 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:02,345 [PoolSender thread] Getting block error
+2021-01-03 17:57:02,843 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:02,843 [PoolSender thread] Getting block error
+2021-01-03 17:57:03,341 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:03,341 [PoolSender thread] Getting block error
+2021-01-03 17:57:03,839 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:03,839 [PoolSender thread] Getting block error
+2021-01-03 17:57:04,337 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:04,337 [PoolSender thread] Getting block error
+2021-01-03 17:57:04,835 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:04,835 [PoolSender thread] Getting block error
+2021-01-03 17:57:05,333 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:05,333 [PoolSender thread] Getting block error
+2021-01-03 17:57:05,831 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:05,831 [PoolSender thread] Getting block error
+2021-01-03 17:57:06,329 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:06,329 [PoolSender thread] Getting block error
+2021-01-03 17:57:06,827 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:06,827 [PoolSender thread] Getting block error
+2021-01-03 17:57:07,325 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:07,325 [PoolSender thread] Getting block error
+2021-01-03 17:57:07,823 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:07,823 [PoolSender thread] Getting block error
+2021-01-03 17:57:08,321 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:08,321 [PoolSender thread] Getting block error
+2021-01-03 17:57:08,704 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:08,704 [PoolSender thread] Getting block error
+2021-01-03 17:57:08,755 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:08,755 [PoolSender thread] Getting block error
+2021-01-03 17:57:08,805 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 17:57:08,806 [PoolSender thread] Getting block error
+2021-01-03 17:57:18,856 [PoolSender thread] CURL: Timeout was reached
+2021-01-03 17:57:18,856 [PoolSender thread] Getting block error
+2021-01-03 18:57:21,879 [main thread] Number Of AMD GPUs: 1
+2021-01-03 18:57:21,888 [main thread] Using configuration file ./config.json
+2021-01-03 18:57:21,898 [main thread] Block getting URL:
+   http://88.198.13.202:9052/mining/candidate
+2021-01-03 18:57:21,898 [main thread] Solution posting URL:
+   http://88.198.13.202:9052/mining/solution
+2021-01-03 18:57:21,899 [main thread] Generated public key:
+      pkHex = 0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380
+2021-01-03 18:57:21,918 [main thread] Start Gpu 0
+2021-01-03 18:57:22,919 [PoolSender thread] Gpu 0Started
+2021-01-03 18:57:22,919 [PoolSender thread] GPU 0 mem_size: 7992  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-03 18:57:22,919 [PoolSender thread] GPU 0 allocating memory
+2021-01-03 18:57:23,044 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 18:57:23,845 [PoolSender thread] Waiting for block data to be published by node...
+2021-01-03 18:57:23,971 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 18:57:24,771 [PoolSender thread] Waiting for block data to be published by node...
+2021-01-03 18:57:24,897 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 18:57:25,698 [PoolSender thread] Waiting for block data to be published by node...
+2021-01-03 18:57:25,823 [PoolSender thread] CURL: Couldn't connect to server
+2021-01-03 18:57:30,876 [main thread] Number Of AMD GPUs: 1
+2021-01-03 18:57:30,876 [main thread] Using configuration file __config.json
+2021-01-03 18:57:30,900 [main thread] Block getting URL:
+   http://37.156.20.158:9052/mining/candidate
+2021-01-03 18:57:30,900 [main thread] Solution posting URL:
+   http://37.156.20.158:9052/mining/solution
+2021-01-03 18:57:30,901 [main thread] Generated public key:
+      pkHex = 03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A
+2021-01-03 18:57:30,903 [main thread] Start Gpu 0
+2021-01-03 18:57:31,903 [PoolSender thread] Gpu 0Started
+2021-01-03 18:57:31,903 [PoolSender thread] GPU 0 mem_size: 7992  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-03 18:57:31,903 [PoolSender thread] GPU 0 allocating memory
+2021-01-03 18:57:32,029 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "4F1CEFCCE56691D56C4E39099CF459B8DDC4C1A3DB5CD942F3F014B7EA7DE725",
+  "B" : 7719472615821079694904732333912527190189170951938326958840344209434544099622,
+  "H" : 280,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 18:57:42,557 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "BD4762D6B1961A4FA19EEE97B6A99C7081566A0F33035D2F8D01232973134D55",
+  "B" : 7719472615821079694904732333912527190189170951938326958840344209434544099622,
+  "H" : 281,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 18:57:57,747 [PoolSender thread] GPU 0 read new block data
+2021-01-03 18:58:00,463 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "B56A41C7E181880EC5A1D62383E893210EBDE56F8BF85AE528814209A3223045",
+  "B" : 7719472615821079694904732333912527190189170951938326958840344209434544099622,
+  "H" : 282,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 18:58:18,244 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "8D61A6CD5B3CE991674DC5D7DF85E60E7968B6A5D19594AC43A6A58F8EB5FA85",
+  "B" : 7719472615821079694904732333912527190189170951938326958840344209434544099622,
+  "H" : 283,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 18:58:31,361 [PoolSender thread] GPU 0 blockId != info->blockId.load 
+2021-01-03 18:58:31,364 [PoolSender thread] GPU 0 read new block data
+2021-01-03 18:58:36,170 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "0A73FA45731976014F0DDF819914A39FA5F8D5D8A0131329E79212FB0DA70D89",
+  "B" : 7719472615821079694904732333912527190189170951938326958840344209434544099622,
+  "H" : 284,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 18:58:53,785 [PoolSender thread] Some of expected fields not present in /block/candidate
+2021-01-03 18:58:53,786 [PoolSender thread] Block data: THERE WAS AN INTERNAL SERVER ERROR.
+2021-01-03 18:58:53,786 [PoolSender thread] Getting block error
+2021-01-03 18:58:53,961 [PoolSender thread] Got new block in main thread, block data: {
+  "MSG" : "6E5BA1F397427E32893105F32BF5ED843F81BD9AA8F841BA5AA29A3A56E6F838",
+  "B" : 7719472615821079694904732333912527190189170951938326958840344209434544099622,
+  "H" : 285,
+  "PK" : "03702266CAE8DAF75B7F09D4C23AD9CDC954849EE280EEFAE0D67BD97DB4A68F6A"
+}
+2021-01-03 18:59:04,950 [PoolSender thread] GPU 0 blockId != info->blockId.load 
+2021-01-03 18:59:04,953 [PoolSender thread] GPU 0 read new block data
+2021-01-04 23:43:42,775 INFO [main thread] Number Of AMD GPUs: 1
+2021-01-04 23:43:42,775 INFO [main thread] Using configuration file ./config.json
+2021-01-04 23:43:42,775 ERROR [main thread] Configuration file ./config.json is not found
+2021-01-04 23:44:03,925 INFO [main thread] Number Of AMD GPUs: 1
+2021-01-04 23:44:03,925 INFO [main thread] Using configuration file ./config.json
+2021-01-04 23:44:03,925 INFO [main thread] Block getting URL:
+   http://88.198.13.202:9052/mining/candidate
+2021-01-04 23:44:03,926 INFO [main thread] Solution posting URL:
+   http://88.198.13.202:9052/mining/solution
+2021-01-04 23:44:04,949 INFO [GPU 0 miner] Gpu 0 Started
+2021-01-04 23:44:04,949 INFO [GPU 0 miner] GPU 0 mem_size: 7820  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-04 23:44:04,949 INFO [GPU 0 miner] GPU 0 allocating memory
+2021-01-04 23:44:05,196 INFO [main thread] Got new block in main thread, block data: {
+  "MSG" : "F7E9811DAB0777927E5974155E4696B6D3D858B88DF3B99FEDE64F1EDC4E6193",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 961,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-04 23:44:31,137 INFO [GPU 0 miner] GPU 0 read new block data
+2021-01-04 23:45:04,578 INFO [GPU 0 miner] solution found
+2021-01-04 23:45:04,578 INFO [GPU 0 miner] GPU 0 found and trying to POST a solution:
+2021-01-04 23:45:04,578 INFO [GPU 0 miner] POST request {"n":"0000000000001170"}
+2021-01-04 23:45:04,828 INFO [GPU 0 miner] Node response:{
+  
+}
+2021-01-04 23:45:04,982 INFO [GPU 0 miner] GPU 0 read new block data
+2021-01-04 23:45:04,982 INFO [main thread] Got new block in main thread, block data: {
+  "MSG" : "4BC37BC6BAA909F85598CB82309CACDCCFD60DA70F12E889658E9A65A50E63B2",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 962,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-04 23:46:27,574 INFO [main thread] Number Of AMD GPUs: 1
+2021-01-04 23:46:27,574 INFO [main thread] Using configuration file config.json
+2021-01-04 23:46:27,575 INFO [main thread] Block getting URL:
+   http://88.198.13.202:9052/mining/candidate
+2021-01-04 23:46:27,575 INFO [main thread] Solution posting URL:
+   http://88.198.13.202:9052/mining/solution
+2021-01-04 23:46:28,580 INFO [GPU 0 miner] Gpu 0 Started
+2021-01-04 23:46:28,580 INFO [GPU 0 miner] GPU 0 mem_size: 7819  (MB) , max_mem_alloc_size: 4048 (MB) 
+2021-01-04 23:46:28,580 INFO [GPU 0 miner] GPU 0 allocating memory
+2021-01-04 23:46:28,823 INFO [main thread] Got new block in main thread, block data: {
+  "MSG" : "4BC37BC6BAA909F85598CB82309CACDCCFD60DA70F12E889658E9A65A50E63B2",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 962,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
+2021-01-04 23:46:55,071 INFO [GPU 0 miner] GPU 0 read new block data
+2021-01-04 23:47:28,851 INFO [GPU 0 miner] solution found
+2021-01-04 23:47:28,852 INFO [GPU 0 miner] GPU 0 found and trying to POST a solution:
+2021-01-04 23:47:28,852 INFO [GPU 0 miner] POST request {"n":"0000000000000D14"}
+2021-01-04 23:47:29,100 INFO [GPU 0 miner] Node response:{
+  
+}
+2021-01-04 23:47:29,223 INFO [GPU 0 miner] GPU 0 read new block data
+2021-01-04 23:47:29,223 INFO [main thread] Got new block in main thread, block data: {
+  "MSG" : "7AF9676BB9EE3F3ED4A1275C16A37D61A3ABB922ED9F3E8419E012163CE17D84",
+  "B" : 7237005577332262213973186563042994240802347767442181523912822696344885093396,
+  "H" : 963,
+  "PK" : "0354EFC32652CAD6CF1231BE987AFA29A686AF30B5735995E3CE51339C4D0CA380"
+}
