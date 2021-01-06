@@ -13,7 +13,7 @@ These files must be in the same folder as Executable file:
   * Libcurl.dll( in windows)::: There is a libcurl.dll file in the win64 folder, use it or better replace it with your own built file
   * Config.json
   
- Change the config.json file with __your node's address. 
+ Change the config.json file with your node's address. 
   
  # Requirements (Linux)
  
@@ -99,4 +99,4 @@ Bitcoin: 3KkwygpCLs1oEi9aTozFxYunoASV6ZrykJ
 
 Bitcoin: bc1q7flay376e5mcp4ljjxpdp7r6p8yajcjm5mu6wd
 
-ERGO: 9gZPigzM9ieRaCrzRC7YZ4ECFrKmrKuazUoT5U6fcnVoY6YbHN4
+ERGO: 9fFUw6DqRuyFCv13nQyoDuDz4TiR4GvVvWRcSvqzs39eBVcb5S1
