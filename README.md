@@ -1,4 +1,5 @@
-# ergoAMDminer
+# Reference OpenCL Miner for Autolykos v2 (Ergo) for AMD GPUs
+
 OpenCL miner for [ergoplatform.com](https://github.com/ergoplatform)
 
 You can find CUDA miner at:  [CUDA miner](https://github.com/mhssamadani/Autolykos2_NV_Miner)
