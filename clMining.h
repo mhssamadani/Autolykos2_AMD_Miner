@@ -35,26 +35,18 @@ public:
 	void hBlockMining(
 		// boundary for puzzle
 		cl_mem bound,
-		// pool boundary for puzzle
-		cl_mem pbound,
 		// data: mes
 		cl_mem mes,
 		// nonce base
 		const cl_ulong base,
+		const cl_ulong endNonce,
 		// block height
 		const cl_uint  height,
 		// precalculated hashes
 		cl_mem hashes,
-		// results
-		cl_mem res,
 		// indices of valid solutions
 		cl_mem valid,
-		cl_mem vCount,
-		// P results
-		cl_mem Pres,
-		// indices of P valid solutions
-		cl_mem Pvalid,
-		cl_mem pCount
+		cl_mem vCount
 	
 	);
 

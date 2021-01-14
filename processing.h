@@ -12,8 +12,8 @@
 int ReadConfig(
     const char * fileName,
     char * from,
-    char * to,
-	char * poolurl
+	char * to,
+	char * endJob
 );
 
 // print public key

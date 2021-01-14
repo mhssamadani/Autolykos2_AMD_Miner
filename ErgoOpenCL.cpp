@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 #include "ergoAutolykos.h"
-#include "ergoTester.h"
+//#include "ergoTester.h"
 
 INITIALIZE_EASYLOGGINGPP
 namespace ch = std::chrono;

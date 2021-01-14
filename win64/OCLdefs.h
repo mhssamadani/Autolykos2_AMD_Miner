@@ -31,7 +31,7 @@ typedef unsigned __int32        cl_uint;
 
 
 #define MAX_MINER 100
-#define MAX_POOL_RES 10
+#define MAX_POOL_RES 16
 
 ////////////////////////////////////////////////////////////////////////////////
 //  PARAMETERS: Autolykos algorithm
@@ -83,6 +83,7 @@ typedef unsigned __int32        cl_uint;
 // height size
 #define HEIGHT_SIZE       4
 
+//#define EXTRA_BASE_SIZE       4
 
 // index size
 #define INDEX_SIZE_8       4

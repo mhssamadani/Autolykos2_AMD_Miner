@@ -25,5 +25,4 @@ C_DEPS :=
 SUBDIRS := \
 . \
 x64/Debug \
-x64/Release \
 

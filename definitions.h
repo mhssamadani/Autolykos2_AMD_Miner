@@ -33,10 +33,8 @@ struct info_t
 	// Mutex for curl usage/maybe future websocket
 	// not used now
 	// std::mutex io_mutex;
-	uint8_t AlgVer;
 	// Puzzle data to read
 	uint8_t bound[NUM_SIZE_8];
-	uint8_t poolbound[NUM_SIZE_8];
 	uint8_t mes[NUM_SIZE_8];
 	uint8_t sk[NUM_SIZE_8];
 	uint8_t pk[PK_SIZE_8];
@@ -44,9 +42,12 @@ struct info_t
 	char pkstr[PK_SIZE_4 + 1];
 	int keepPrehash;
 	char to[MAX_URL_SIZE];
-	char pool[MAX_URL_SIZE];
+	char endJob[MAX_URL_SIZE];
 	uint8_t Hblock[HEIGHT_SIZE];
 
+	char    stratumMode;
+	uint8_t extraNonceStart[NONCE_SIZE_8];
+	uint8_t extraNonceEnd[NONCE_SIZE_8];
 	// Increment when new block is sent by node
 	std::atomic<uint_t> blockId;
 };

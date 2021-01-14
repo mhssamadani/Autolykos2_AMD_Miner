@@ -46,8 +46,12 @@ int GetLatestBlock(
 // CURL http POST request
 int PostPuzzleSolution(
     const char * to,
-    const uint8_t * nonce,
-	bool toPool = false
+    const uint8_t * nonce
 );
+
+// CURL http notification, Completed job 
+int JobCompleted(
+	const char * to
+	);
 
 #endif // REQUEST_H
