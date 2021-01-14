@@ -1,9 +1,20 @@
-# Reference OpenCL Miner for Autolykos v2 (Ergo) for AMD GPUs
+# OpenCL Miner for Autolykos v2 (Ergo) for AMD GPUs
 
 OpenCL miner for [ergoplatform.com](https://github.com/ergoplatform)
 
 You can find CUDA miner at:  [CUDA miner](https://github.com/mhssamadani/Autolykos2_NV_Miner)
 
+## Stratum Proxy
+
+In order to use this miner with a stratum pool, a stratum proxy is needed.
+- Install [Ergo Stratum Proxy](https://github.com/mhssamadani/ErgoStratumProxy)
+- Update proxy's [`client.js`](https://github.com/mhssamadani/ErgoStratumProxy/blob/main/client.js)  file:
+  - [port](https://github.com/mhssamadani/ErgoStratumProxy/blob/94b4561fbb857b3dbd227535bca75db311de8d66/client.js#L139)
+  - [Pool address](https://github.com/mhssamadani/ErgoStratumProxy/blob/94b4561fbb857b3dbd227535bca75db311de8d66/client.js#L7)
+- Start proxy
+- In the miner's config file set node address to the proxy's address
+ (by default this address is: ```{ "node" : "https://127.0.0.1:3000" }```)
+ 
 # Configuration
 These files must be in the same folder as Executable file:
   * Miningkernel.cl
@@ -64,36 +75,33 @@ add OpenCL , LibCurl , OpenSSl libreries
 
 Include Directories:
 
-![](https://github.com/mhssamadani/Autolykos2_AMD_Miner/blob/master/img/includeDir.png)
+![](https://raw.githubusercontent.com/mhssamadani/Autolykos2_AMD_Miner/main/img/includeDir.png)
 
 
 Additional Include Directories:
 
-![](https://github.com/mhssamadani/Autolykos2_AMD_Miner/blob/master/img/AddInc.png)
+![](https://raw.githubusercontent.com/mhssamadani/Autolykos2_AMD_Miner/main/img/AddInc.png)
 
 
 
 Additional Library Directories:
 
 
-![](https://github.com/mhssamadani/Autolykos2_AMD_Miner/blob/master/img/AddLib.png)
+![](https://raw.githubusercontent.com/mhssamadani/Autolykos2_AMD_Miner/main/img/AddLib.png)
 
 
 
 Additional Dependencies:
 
 
-![](https://github.com/mhssamadani/Autolykos2_AMD_Miner/blob/master/img/AddDep.png)
+![](https://raw.githubusercontent.com/mhssamadani/Autolykos2_AMD_Miner/main/img/AddDep.png)
 
-
-
+ 
 # Http info
 Miner has a HTTP info page located at `http://miningnode:36207` in json format which shows status of gpus (hashrate, fan speed, temp, ...)
 
 # Donations and Support
-
-Note that the miner is free to use and we do not charge any fee from what you mine.
-To support all the work we're doing, we welcome donations from ERGO miners!
+Note that the miner is free to use and we do not charge any fee from what you mine. To support all the work we're doing, we welcome donations from ERGO miners!
 
 Bitcoin: 3KkwygpCLs1oEi9aTozFxYunoASV6ZrykJ
 
