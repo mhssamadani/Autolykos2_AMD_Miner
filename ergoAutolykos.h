@@ -38,6 +38,7 @@
 #include <thread>
 #include <vector>
 #include <random>
+#include "queue.h"
 
 
 #ifdef _WIN32
@@ -58,24 +59,25 @@ namespace ch = std::chrono;
 using namespace std::chrono;
 class ergoAutolykos
 {
-
-
+private:
+	CLWarpper **clw;
+	
 public:
 	ergoAutolykos();
 	~ergoAutolykos();
 
-	CLWarpper **clw;
 
 	////////////////////////////////////////////////////////////////////////////////
 	//  Miner thread cycle
 	////////////////////////////////////////////////////////////////////////////////
-	static void MinerThread(CLWarpper *oclWrapper, int deviceId, info_t * info, std::vector<double>* hashrates, std::vector<int>* tstamps);
+	static void MinerThread(CLWarpper *oclWrapper,const int deviceId, const int totalGPUCards, info_t * info, std::vector<double>* hashrates, std::vector<int>* tstamps, BlockQueue<MinerShare>* shQueue);
 	////////////////////////////////////////////////////////////////////////////////
-	static void PoolSenderThread(CLWarpper *oclWrapper, int deviceId, info_t * info);
+	static void SenderThread(info_t * info, BlockQueue<MinerShare>* shQueue);
 	////////////////////////////////////////////////////////////////////////////////
 
 //  
 ////////////////////////////////////////////////////////////////////////////////
 	int startAutolykos(int argc, char ** argv);
+
 };
 

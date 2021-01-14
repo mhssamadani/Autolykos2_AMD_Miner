@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include <string.h>
-
+#include "easylogging++.h"
 int CLWarpper::instance_count = 0;
 static int _gpus = 0;
 
@@ -421,6 +421,7 @@ std::shared_ptr<CLProgram> CLWarpper::buildProgramFromFile(const char *filename,
 	if (find > -1 ) {
 		buildLogMessage = build_log;
 		std::cout << buildLogMessage << std::endl;
+		LOG(ERROR) << buildLogMessage; 
 	}
 	delete[] build_log;
 	checkError(error);

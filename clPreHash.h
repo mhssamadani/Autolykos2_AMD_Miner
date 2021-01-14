@@ -63,13 +63,10 @@ public:
 
 
 	int Prehash(
-		const int keep,
 		// data: height
 		cl_uint  height,
 		// hashes
-		cl_mem   hashes,
-		// indices of invalid range hashes
-		cl_mem   invalid
+		cl_mem   hashes
 		);
 
 };

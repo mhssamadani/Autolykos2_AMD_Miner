@@ -28,8 +28,9 @@
 int ReadConfig(
     const char * fileName,
     char * from,
-    char * to,
-	char *  poolUrl
+    char * to, 
+	char * endJob
+
 )
 {
     std::ifstream file(
@@ -77,8 +78,8 @@ int ReadConfig(
         if (config.jsoneq(t, "node"))
         {
             from[0] = '\0';
-            to[0] = '\0';
-			poolUrl[0] = '\0';
+			to[0] = '\0';
+			endJob[0] = '\0';
 
             strncat(
                 from, config.GetTokenStart(t + 1), config.GetTokenLen(t + 1)
@@ -88,10 +89,11 @@ int ReadConfig(
             strncat(to, config.GetTokenStart(t + 1), config.GetTokenLen(t + 1));
             strcat(to, "/mining/solution");
 
-			strncat(poolUrl, config.GetTokenStart(t + 1), config.GetTokenLen(t + 1));
-			strcat(poolUrl, "/mining/share");
+			strncat(endJob, config.GetTokenStart(t + 1), config.GetTokenLen(t + 1));
+			strcat(endJob, "/mining/job/completed");
 
-            VLOG(1) << "from url " << from  << " to url " << to << " pool url " << poolUrl;
+
+            VLOG(1) << "from url " << from  << " to url " << to  ;
 
             readNode = 1;
         }

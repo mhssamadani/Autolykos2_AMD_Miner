@@ -158,7 +158,6 @@
     <ClInclude Include="definitions.h" />
     <ClInclude Include="easylogging++.h" />
     <ClInclude Include="ergoAutolykos.h" />
-    <ClInclude Include="ergoTester.h" />
     <ClInclude Include="httpapi.h" />
     <ClInclude Include="httplib.h" />
     <ClInclude Include="jsmn.h" />
