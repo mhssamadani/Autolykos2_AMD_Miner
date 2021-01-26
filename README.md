@@ -13,7 +13,7 @@ In order to use this miner with a stratum pool, a stratum proxy is needed.
   - [Pool address and port](https://github.com/mhssamadani/ErgoStratumProxy/blob/94b4561fbb857b3dbd227535bca75db311de8d66/client.js#L7)
 - Start proxy
 - In the miner's config file set node address to the proxy's address
- (by default this address is: ```{ "node" : "https://127.0.0.1:3000" }```)
+ (by default this address is: ```{ "node" : "http://127.0.0.1:3000" }```)
  
 # Configuration
 These files must be in the same folder as Executable file:
