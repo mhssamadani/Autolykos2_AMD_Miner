@@ -1,5 +1,5 @@
 #include "ergoAutolykos.h"
-
+#include "cpuAutolykos.h"
 
 std::atomic<int> end_jobs(0);
 
@@ -34,6 +34,7 @@ void ergoAutolykos::SenderThread(info_t * info, BlockQueue<MinerShare>* shQueue)
 ////////////////////////////////////////////////////////////////////////////////
 void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int totalGPUCards, info_t * info, std::vector<double>* hashrates, std::vector<int>* tstamps, BlockQueue<MinerShare>* shQueue)
 {
+	AutolykosAlg solVerifier;
 	char threadName[20];
 	sprintf(threadName, "GPU %i miner", deviceId);
 	el::Helpers::setThreadName(threadName);
@@ -400,19 +401,23 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 				memcpy(&endNonceT , info->extraNonceEnd , sizeof(uint64_t));
 				if ( (*((uint64_t *)nonce)) <= endNonceT )
 				{
-					//char tmpTest[16];
-					//LittleEndianToHexStr(nonce, NONCE_SIZE_8, tmpTest);
-					//LOG(INFO) << "GPU  sol: " << i << " index: " << hindices_d[i] << " nonceDecimal: " << nonce <<  " nonceHex: " << tmpTest;
-
-					MinerShare share(*((uint64_t *)nonce));
-					shQueue->put(share);
-
-
-					if (!info->stratumMode)
+					bool checksol = solVerifier.RunAlg(info->mes, nonce,info->bound,info->Hblock);
+					if (checksol)
 					{
-						state = STATE_KEYGEN;
-						//end_jobs.fetch_add(1, std::memory_order_relaxed);
-						break;
+						MinerShare share(*((uint64_t *)nonce));
+						shQueue->put(share);
+
+
+						if (!info->stratumMode)
+						{
+							state = STATE_KEYGEN;
+							//end_jobs.fetch_add(1, std::memory_order_relaxed);
+							break;
+						}
+					}
+					else
+					{
+						LOG(INFO) << " problem in verify solution, nonce: " << *((uint64_t *)nonce);
 					}
 				}
 				else
