@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Autolykos.cpp" />
+    <ClCompile Include="cpuAutolykos.cpp" />
     <ClCompile Include="clMining.cpp" />
     <ClCompile Include="clPreHash.cpp" />
     <ClCompile Include="cl_warpper.cpp" />
@@ -145,11 +145,10 @@
     <ClCompile Include="adl.h" />
     <ClCompile Include="processing.cc" />
     <ClCompile Include="request.cc" />
-    <ClCompile Include="SolutionVerifier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adl-sdk\adl_functaions.h" />
-    <ClInclude Include="Autolykos.h" />
+    <ClInclude Include="cpuAutolykos.h" />
     <ClInclude Include="clMining.h" />
     <ClInclude Include="clPreHash.h" />
     <ClInclude Include="cl_warpper.h" />
@@ -166,7 +165,6 @@
     <ClInclude Include="OCLdefs.h" />
     <ClInclude Include="processing.h" />
     <ClInclude Include="request.h" />
-    <ClInclude Include="SolutionVerifier.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MiningKernel.cl" />
