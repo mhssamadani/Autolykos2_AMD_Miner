@@ -14,9 +14,8 @@ CC_SRCS += \
 ../sysfs-gpu-controls.cc 
 
 CPP_SRCS += \
-../Autolykos.cpp \
+../cpuAutolykos.cpp \
 ../ErgoOpenCL.cpp \
-../SolutionVerifier.cpp \
 ../clMining.cpp \
 ../clPreHash.cpp \
 ../cl_warpper.cpp \
@@ -36,9 +35,8 @@ CC_DEPS += \
 ./sysfs-gpu-controls.d 
 
 OBJS += \
-./Autolykos.o \
+./cpuAutolykos.o \
 ./ErgoOpenCL.o \
-./SolutionVerifier.o \
 ./clMining.o \
 ./clPreHash.o \
 ./cl_warpper.o \
@@ -54,9 +52,8 @@ OBJS += \
 ./sysfs-gpu-controls.o 
 
 CPP_DEPS += \
-./Autolykos.d \
+./cpuAutolykos.d \
 ./ErgoOpenCL.d \
-./SolutionVerifier.d \
 ./clMining.d \
 ./clPreHash.d \
 ./cl_warpper.d \
