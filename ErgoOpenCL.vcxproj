@@ -164,6 +164,7 @@
     <ClInclude Include="OCLdecs.h" />
     <ClInclude Include="OCLdefs.h" />
     <ClInclude Include="processing.h" />
+    <ClInclude Include="queue.h" />
     <ClInclude Include="request.h" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@ MiningClass::MiningClass(CLWarpper *cll)
 {
 	cl = cll;
 
-	const  string buildOptions = "-I .";
+	const  string buildOptions = " -cl-std=CL2 -I .";
 	program = cl->buildProgramFromFile("MiningKernel.cl", buildOptions);
 
 	int tr;
@@ -65,37 +65,45 @@ void MiningClass::hBlockMining(
 	cl_mem hashes,
 	// indices of valid solutions
 	cl_mem valid,
-	cl_mem vCount
+	cl_mem vCount,
+	cl_mem BHashes
 	)
 {
-	cl_kernel kernel = program->getKernel("BlockMining");
-
+	cl_kernel kernelStep1 = program->getKernel("BlockMiningStep1");
 	int id = 0;
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_mem), &bound));
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_mem), &mes));
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_ulong), &base));
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_uint), &height));
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_mem), &hashes));
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_mem), &valid));
-	cl->checkError(clSetKernelArg(kernel, id++, sizeof(cl_mem), &vCount));
+	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_mem), &mes));
+	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_ulong), &base));
+	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_mem), &hashes));
+	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_mem), &BHashes));
 
-	int threads = THREADS_PER_ITER;
-	cl_ulong check = base + threads;
-	if (check > endNonce)
-	{
-		threads = endNonce - base;
-	}
-	if (threads < 0)
-	{
-		LOG(INFO) << " negative threads, ( base: " << base << " , endNonce: " << endNonce << " ) ";
-		return;
-	}
-	size_t t1 = ((threads / BLOCK_DIM) + 1) * BLOCK_DIM;
+	size_t t1 = ((THREADS_PER_ITER / (BLOCK_DIM*4)) + 1) * BLOCK_DIM;
 	size_t global_work_size[1] = { t1 };
 	size_t local_work_size[1] = { BLOCK_DIM };
 
-	cl_int  err = clEnqueueNDRangeKernel(*cl->queue, kernel, 1, 0, global_work_size, local_work_size, 0, 0, 0);
+	cl_int  err = clEnqueueNDRangeKernel(*cl->queue, kernelStep1, 1, 0, global_work_size, local_work_size, 0, 0, 0);
 	cl->checkError(err);
 	err = clFinish(*cl->queue);
 	cl->checkError(err);
+
+	//--------------------------------
+	cl_kernel kernelStep2 = program->getKernel("BlockMiningStep2");
+	id = 0;
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &bound));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &mes));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_ulong), &base));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_uint), &height));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &hashes));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &valid));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &vCount));
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &BHashes));
+
+	size_t t2 = ((THREADS_PER_ITER / (BLOCK_DIM )) + 1) * BLOCK_DIM;
+	size_t global_work_size2[1] = { t2};
+	size_t local_work_size2[1] = { BLOCK_DIM };
+
+	cl_int err2 = clEnqueueNDRangeKernel(*cl->queue, kernelStep2, 1, 0, global_work_size2, local_work_size2, 0, 0, 0);
+	cl->checkError(err2);
+	err2 = clFinish(*cl->queue);
+ 	cl->checkError(err2);
+
 }
