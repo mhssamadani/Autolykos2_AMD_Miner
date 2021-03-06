@@ -59,7 +59,6 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 	uint8_t nonce[NONCE_SIZE_8];
 
 	char to[MAX_URL_SIZE];
-	int keepPrehash = 0;
 
 	char tmpBuff[PK_SIZE_8 + PK_SIZE_8 + NUM_SIZE_8];
 	// thread info variables
@@ -76,7 +75,6 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 	memcpy(bound_h, info->bound, NUM_SIZE_8);
 	memcpy(to, info->to, MAX_URL_SIZE * sizeof(char));
 	// blockId = info->blockId.load();
-	keepPrehash = info->keepPrehash;
 
 	info->info_mutex.unlock();
 
@@ -91,10 +89,6 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 
 
 	LOG(INFO) << "GPU " << clw->m_gpuIndex << " mem_size: " << clw->getGlobalSizeMB() << "  (MB) , max_mem_alloc_size: " << clw->getMaxAllocSizeMB() << " (MB) ";
-	size_t uctx_t_count = max_mem_alloc_size / sizeof(uctx_t);
-
-	size_t memCount = (N_LEN / uctx_t_count) + 1;
-	size_t n_len = N_LEN;
 
 	if (max_mem_alloc_size < MIN_FREE_MEMORY)
 	{
@@ -104,11 +98,6 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 		return;
 	}
 
-	if (keepPrehash && (memCount > 2 || memCount < 0))
-	{
-		LOG(ERROR) << "GPU " << clw->m_gpuIndex << "C: Error in Memory Alloc for KeepPrehash";
-		keepPrehash = false;
-	}
 
 	//========================================================================//
 	//  Device memory allocation
@@ -118,26 +107,24 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 
 	//-------------------------------------------------------------
 	// boundary for puzzle
-	// (2 * PK_SIZE_8 + 2 + 4 * NUM_SIZE_8 + 212 + 4) bytes // ~0 MiB
-	cl_mem bound_d = clw->Createbuffer((NUM_SIZE_8 + DATA_SIZE_8) * sizeof(char), CL_MEM_READ_WRITE);
+	cl_mem bound_d = clw->Createbuffer(NUM_SIZE_8 * sizeof(char), CL_MEM_READ_WRITE);
 	if (bound_d == NULL)
 	{
 		LOG(INFO) << "GPU " << deviceId << "error in  allocating hashbound_des_d";
 		return;
 	}
-	cl_uint* hbound_d = (cl_uint*)malloc((NUM_SIZE_8 + DATA_SIZE_8) * sizeof(char));
-	allocatedMem += (NUM_SIZE_8 + DATA_SIZE_8) * sizeof(char);
+	cl_uint* hbound_d = (cl_uint*)malloc(NUM_SIZE_8  * sizeof(char));
+	allocatedMem += (NUM_SIZE_8 * sizeof(char));
 	//-------------------------------------------------------------
-	// data: pk || mes || w || padding || x || sk || ctx
-	//cl_uint * data_d = bound_d + NUM_SIZE_32;
-	cl_mem data_d = clw->Createbuffer((2 * PK_SIZE_8 + 2 + 3 * NUM_SIZE_8 + 212 + 4) * sizeof(char), CL_MEM_READ_WRITE);
+	// data: mes
+	cl_mem data_d = clw->Createbuffer((NUM_SIZE_8 ) * sizeof(char), CL_MEM_READ_WRITE);
 	if (data_d == NULL)
 	{
 		LOG(INFO) << "GPU " << deviceId << "error in  allocating data_d";
 		return;
 	}
-	cl_uint* hdata_d = (cl_uint*)malloc((2 * PK_SIZE_8 + 2 + 3 * NUM_SIZE_8 + 212 + 4) * sizeof(char));
-	allocatedMem += (2 * PK_SIZE_8 + 2 + 3 * NUM_SIZE_8 + 212 + 4) * sizeof(char);
+	cl_uint* hdata_d = (cl_uint*)malloc((NUM_SIZE_8 ) * sizeof(char));
+	allocatedMem += (NUM_SIZE_8  * sizeof(char));
 
 	// precalculated hashes
 	// N_LEN * NUM_SIZE_8 bytes // 2 GiB
@@ -148,13 +135,18 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 		return;
 	}
 	allocatedMem += (cl_uint)N_LEN * NUM_SIZE_8 * sizeof(char);
-	//cl_uint* hhashes_d = (cl_uint*)malloc((cl_uint)N_LEN * NUM_SIZE_8 * sizeof(char));
+
+	cl_mem BHashes = clw->Createbuffer((NUM_SIZE_8)*THREADS_PER_ITER * sizeof(cl_uint), CL_MEM_READ_WRITE);
+	if (BHashes == NULL)
+	{
+		LOG(INFO) << "GPU " << deviceId << "error in  allocating hashes_d";
+		return;
+	}
+	allocatedMem += ((cl_uint)(NUM_SIZE_8)*THREADS_PER_ITER);
 
 
 	/////////--------------------------------------------------------------------------------------
-	// WORKSPACE_SIZE_8 bytes // depends on macros, now ~512 MiB
 	// potential solutions of puzzle
-
 	// indices of unfinalized hashes
 	cl_mem indices_d = clw->Createbuffer(MAX_POOL_RES * sizeof(cl_uint), CL_MEM_READ_WRITE);
 	if (indices_d == NULL)
@@ -181,61 +173,6 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 	memset(hcount_d, 0, sizeof(cl_uint));
 	clw->CopyBuffer(count_d, hcount_d, sizeof(cl_uint), false);
 
-	/////////--------------------------------------------------------------------------------------
-
-
-	// unfinalized hash contexts
-	// if keepPrehash == true // N_LEN * 80 bytes // 5 GiB
-	cl_mem uctxs_d[100];
-	cl_ulong memSize[100];
-	uctxs_d[0] = uctxs_d[1] = NULL;
-	keepPrehash = 0; //temporary
-	if (keepPrehash)
-	{
-		size_t preS = (cl_uint)N_LEN * sizeof(uctx_t);
-		if (memCount > 2 || memCount < 0)
-		{
-			LOG(INFO) << "C: Error in Memory Alloc for KeepPrehash";
-			keepPrehash = false;
-
-		}
-		else if ((allocatedMem + preS) < mem_size)
-		{
-
-			size_t last = N_LEN % uctx_t_count;
-			size_t sz = 0;
-			for (size_t i = 0; i < memCount; i++)
-			{
-				if (i == memCount - 1)
-				{
-					uctxs_d[i] = clw->Createbuffer(last * sizeof(uctx_t), CL_MEM_READ_WRITE);
-					//huctxs_d[i] = (uctx_t*)malloc(last);
-					memSize[i] = i * uctx_t_count + last;
-				}
-				else
-				{
-					uctxs_d[i] = clw->Createbuffer(uctx_t_count * sizeof(uctx_t), CL_MEM_READ_WRITE);
-					//huctxs_d[i] = (uctx_t*)malloc(uctx_t_count * sizeof(uctx_t));
-					memSize[i] = i * uctx_t_count + uctx_t_count;
-				}
-				if (uctxs_d[i] == NULL)
-				{
-					LOG(INFO) << "A: Error in Memory Alloc for KeepPrehash";
-					keepPrehash = false;
-				}
-
-			}
-		}
-		else
-		{
-			LOG(INFO) << "B: Error in Memory Alloc for KeepPrehash";
-			keepPrehash = false;
-
-		}
-
-	}
-
-
 	//========================================================================//
 	//  Autolykos puzzle cycle
 	//========================================================================//
@@ -245,14 +182,6 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 	cl_uint height = 0;
 	PreHashClass *ph = new PreHashClass(clw);
 	MiningClass *min = new MiningClass(clw);
-
-	// set unfinalized hash contexts if necessary
-	keepPrehash = false;
-	if (keepPrehash)
-	{
-		LOG(INFO) << "Preparing unfinalized hashes on GPU " << deviceId;
-		ph->hUncompleteInitPrehash(data_d, uctxs_d, memSize, memCount);
-	}
 
 	int cntCycles = 0;
 	int NCycles = 50;
@@ -335,23 +264,19 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 
 
 			// copy message
-			memcpy((uint8_t*)hdata_d + PK_SIZE_8, mes_h, NUM_SIZE_8);
+			memcpy((uint8_t*)hdata_d , mes_h, NUM_SIZE_8);
 
 
-			cl_int ret = clw->CopyBuffer(bound_d, hbound_d, (NUM_SIZE_8 + DATA_SIZE_8) * sizeof(char), false);
+			cl_int ret = clw->CopyBuffer(bound_d, hbound_d, (NUM_SIZE_8 ) * sizeof(char), false);
 
-			ret = clw->CopyBuffer(data_d, hdata_d, (2 * PK_SIZE_8 + 2 + 3 * NUM_SIZE_8 + 212 + 4) * sizeof(char), false);
+			ret = clw->CopyBuffer(data_d, hdata_d, (NUM_SIZE_8 ) * sizeof(char), false);
 
 			//LOG(INFO) <<  "Starting prehashing with new block data";
 			ph->Prehash(height, hashes_d);
 
 
 			//LOG(INFO) << "Starting InitMining";
-			min->InitMining(&ctx_h, (cl_uint*)mes_h, NUM_SIZE_8);
-			//// copy context
-			ret = clw->CopyBuffer(data_d, hdata_d, (2 * PK_SIZE_8 + 2 + 3 * NUM_SIZE_8 + 212 + 4) * sizeof(char), true);
-			memcpy(hdata_d + COUPLED_PK_SIZE_32 + 3 * NUM_SIZE_32, &ctx_h, sizeof(ctx_t));
-			ret = clw->CopyBuffer(data_d, hdata_d, (2 * PK_SIZE_8 + 2 + 3 * NUM_SIZE_8 + 212 + 4) * sizeof(char), false);
+			//min->InitMining(&ctx_h, (cl_uint*)mes_h, NUM_SIZE_8);
 
 			state = STATE_CONTINUE;
 
@@ -366,13 +291,7 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 		clw->CopyBuffer(indices_d, hindices_d, MAX_POOL_RES*sizeof(cl_uint), false);
 
 
-		//// calculate solution candidates
-		// copy message
-		memcpy((uint8_t*)hdata_d, mes_h, NUM_SIZE_8);
-		memcpy((uint8_t*)hdata_d+ NUM_SIZE_8, &ctx_h, sizeof(ctx_t));
-
-		cl_int ret = clw->CopyBuffer(data_d, hdata_d, (NUM_SIZE_8+ sizeof(ctx_t)) * sizeof(char), false);
-		min->hBlockMining(bound_d, data_d /*mes*/, base, EndNonce, height, hashes_d,indices_d,count_d);
+		min->hBlockMining(bound_d, data_d /*mes*/, base, EndNonce, height, hashes_d,indices_d,count_d,BHashes);
 		VLOG(1) << "Trying to find solution";
 
 		// restart iteration if new block was found
@@ -384,8 +303,8 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 
 
 		// try to find solution
-		ret = clw->CopyBuffer(indices_d, hindices_d, MAX_POOL_RES* sizeof(cl_uint), true);
-
+		cl_int ret = clw->CopyBuffer(indices_d, hindices_d, MAX_POOL_RES* sizeof(cl_uint), true);
+		
 		// solution found
 		if (hindices_d[0])
 		{
@@ -396,11 +315,17 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 			while ((hindices_d[i]) && (i < MAX_POOL_RES))
 			{
 
+				if (!info->stratumMode && i != 0)
+				{
+					break;
+				}
+
 				*((uint64_t *)nonce) = base + hindices_d[i] - 1;
 				uint64_t endNonceT;
 				memcpy(&endNonceT , info->extraNonceEnd , sizeof(uint64_t));
 				if ( (*((uint64_t *)nonce)) <= endNonceT )
 				{
+
 					bool checksol = solVerifier.RunAlg(info->mes, nonce,info->bound,info->Hblock);
 					if (checksol)
 					{
@@ -408,8 +333,8 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 						shQueue->put(share);
 
 
-						if (!info->stratumMode)
-						{
+					if (!info->stratumMode)
+    				{
 							state = STATE_KEYGEN;
 							//end_jobs.fetch_add(1, std::memory_order_relaxed);
 							break;
@@ -645,7 +570,7 @@ int ergoAutolykos::startAutolykos(int argc, char ** argv)
 	//  Main thread get-block cycle
 	//========================================================================//
 	uint_t curlcnt = 0;
-	const uint_t curltimes = 500;
+	const uint_t curltimes = 1000;
 
 	ch::milliseconds ms = ch::milliseconds::zero();
 

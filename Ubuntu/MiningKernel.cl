@@ -2,423 +2,408 @@
 
 
 #include "OCLdecs.h"////problem with relative path
-__kernel void BlockMining(
 
-	// boundary for puzzle
-	global const cl_uint* bound,
-	
-	// data:  mes || ctx
-	global const cl_uint* mes,
-	
-	// nonce base
-	const cl_ulong base,
-	
-	// block height
-	 const cl_uint  height,
-	 
-    // precalculated hashes
+
+#define reverseBytesInt(input,output) \
+do \ 
+{ \
+void * p = &input; \
+uchar4 bytesr = ((uchar4 *)p)[0].wzyx; \
+output = *((cl_uint *)&bytesr); \
+} \
+while (0)
+
+const  __constant cl_ulong ivals[8] = {
+	0x6A09E667F2BDC928, 0xBB67AE8584CAA73B, 0x3C6EF372FE94F82B,
+	0xA54FF53A5F1D36F1, 0x510E527FADE682D1, 0x9B05688C2B3E6C1F,
+	0x1F83D9ABFB41BD6B, 0x5BE0CD19137E2179 };
+
+
+
+
+__kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
+	// precalculated hashes
 	global const cl_uint* hashes,
-	
-	// indices of valid solutions
-	global cl_uint* valid,
-	
-	// solution count
-	global cl_uint* vCount
-	)
-
-{
-	cl_uint tid = get_local_id(0);
-
-	int tidg = get_global_id(0) ;
-//	if(tidg != 0)
-//		return;
-	// local memory
-	// 472 bytes
-	//cl_uint ldata[200];
-
-	// 32 * 64 bits = 256 bytes 
-	//cl_ulong * aux = (cl_ulong *)ldata;
-	cl_ulong  aux[32];
-		
-	// (212 + 4) bytes 
-	ctx_t sdata;
-	for (int i = 0; i < CTX_SIZE; ++i)
-	{
-		((uint8_t * )&sdata)[i] = ((global uint8_t * )mes)[NUM_SIZE_8 + i];
-
-	}
-	ctx_t *ctx = ((ctx_t * )(&sdata));//&lctx;//(ctx_t *)(ldata + 64);
-
-	// (4 * K_LEN) bytes
-	//cl_uint* ind = ldata;
-	cl_uint ind[32];
+	// intermediate Hashes
+	global cl_uint *BHashes) {
 
 
-	//cl_uint* r = ind + K_LEN;
-	cl_uint r[32];  /*????*/
+
+	cl_uint tid;
+	cl_uint r[9] = { 0 };
+
+	cl_ulong aux[32];
 
 
-	cl_uint CV;
-	
+	cl_uint j;
+	cl_uint non[NONCE_SIZE_32];
+	cl_ulong tmp;
+	cl_ulong hsh;
+	cl_ulong h2;
+	cl_uint h3;
+
+
 #pragma unroll
-	for (int t = 0; t < NONCES_PER_THREAD; ++t)
+	for (int ii = 0; ii < 4; ii++)
 	{
-		tid = get_global_id(0) + t * get_global_size(0);
-
+		tid = (NONCES_PER_ITER / 4) * ii + get_global_id(0);
 		if (tid < NONCES_PER_ITER)
 		{
-			cl_uint j;
-			cl_uint non[NONCE_SIZE_32];
 
-			fn_Add(((cl_uint*)& base)[0], tid, 0, non[0], CV);
-
+			cl_uint CV;
+			fn_Add(((cl_uint *)&base)[0], tid, 0, non[0], CV);
 			non[1] = 0;
-			fn_Add(((cl_uint*)& base)[1], 0, CV, non[1], CV);
+			fn_Add(((cl_uint *)&base)[1], 0, CV, non[1], CV);
 
+			cl_ulong tmp;
+			reverseBytesInt(non[1], ((cl_uint *)(&tmp))[0]);
+			reverseBytesInt(non[0], ((cl_uint *)(&tmp))[1]);
 
+			//--------------------------hash 
+			B2B_IV(aux);
+			B2B_IV(aux + 8);
+			aux[0] = ivals[0];
+			((cl_ulong *)(aux))[12] ^= 40;
+			((cl_ulong *)(aux))[13] ^= 0;
 
-			//================================================================//
-			//  Hash nonce
-			//================================================================//
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < NONCE_SIZE_8; ++j)
+			((cl_ulong *)(aux))[14] = ~((cl_ulong *)(aux))[14];
+
+			((cl_ulong *)(aux))[16] = ((cl_ulong *)data)[0];
+			((cl_ulong *)(aux))[17] = ((cl_ulong *)data)[1];
+			((cl_ulong *)(aux))[18] = ((cl_ulong *)data)[2];
+			((cl_ulong *)(aux))[19] = ((cl_ulong *)data)[3];
+			((cl_ulong *)(aux))[20] = tmp;
+			((cl_ulong *)(aux))[21] = 0;
+			((cl_ulong *)(aux))[22] = 0;
+			((cl_ulong *)(aux))[23] = 0;
+			((cl_ulong *)(aux))[24] = 0;
+			((cl_ulong *)(aux))[25] = 0;
+			((cl_ulong *)(aux))[26] = 0;
+			((cl_ulong *)(aux))[27] = 0;
+			((cl_ulong *)(aux))[28] = 0;
+			((cl_ulong *)(aux))[29] = 0;
+			((cl_ulong *)(aux))[30] = 0;
+			((cl_ulong *)(aux))[31] = 0;
+
+			B2B_MIX(aux, aux + 16);
+
+			cl_ulong hsh;
+			//#pragma unroll
+			//    for (j = 0; j < NUM_SIZE_32; j += 2) 
+			//	{
+			//	  j = 6;
+				//3 = 6 >> 1;
+			hsh = ivals[3];
+			hsh ^= ((cl_ulong *)(aux))[3] ^ ((cl_ulong *)(aux))[11];
+
+			//     r[6] =  ((cl_uint*)(&hsh))[0];
+			//     r[7] = ((cl_uint*)(&hsh))[1];
+			//   }
+			reverseBytesInt(((cl_uint*)(&hsh))[1], ((cl_uint *)(&h2))[0]);
+			reverseBytesInt(((cl_uint*)(&hsh))[0], ((cl_uint *)(&h2))[1]);
+
+			//----------------------------------------------------------------------------------------
+			//((uint8_t*)&h2)[0] = ((uint8_t*)r)[31];
+			//((uint8_t*)&h2)[1] = ((uint8_t*)r)[30];
+			//((uint8_t*)&h2)[2] = ((uint8_t*)r)[29];
+			//((uint8_t*)&h2)[3] = ((uint8_t*)r)[28];
+			//((uint8_t*)&h2)[4] = ((uint8_t*)r)[27];
+			//((uint8_t*)&h2)[5] = ((uint8_t*)r)[26];
+			//((uint8_t*)&h2)[6] = ((uint8_t*)r)[25];
+			//((uint8_t*)&h2)[7] = ((uint8_t*)r)[24];
+
+			h3 = h2 % N_LEN;
+			//--------------------------read hash from lookup
+#pragma unroll 8
+			for (int i = 0; i < 8; ++i)
 			{
-				ctx->b[ctx->c++] = ((uint8_t *)non)[NONCE_SIZE_8 - j - 1];
-				
+				reverseBytesInt(hashes[(h3 << 3) + i], r[7 - i]);
 			}
+			//------------------------------------------------------
+
+			//--------------------------hash 
+			B2B_IV(aux);
+			B2B_IV(aux + 8);
+			aux[0] = ivals[0];
+			((cl_ulong *)(aux))[12] ^= 71;//31+32+8;
+			((cl_ulong *)(aux))[13] ^= 0;
+
+			((cl_ulong *)(aux))[14] = ~((cl_ulong *)(aux))[14];
+
+			uint8_t bT[72];
+#pragma unroll 
+			for (j = 0; j < 31; ++j)
+				bT[j] = ((uint8_t *)r)[j + 1];
+#pragma unroll 
+			for (j = 31; j < 63; ++j)
+				bT[j] = ((uint8_t *)data)[j - 31];
+#pragma unroll 
+			for (j = 63; j < 71; ++j)
+				bT[j] = ((uint8_t *)&tmp)[j - 63];
+			bT[71] = 0;
+
+			((cl_ulong *)(aux))[16] = ((cl_ulong *)bT)[0];
+			((cl_ulong *)(aux))[17] = ((cl_ulong *)bT)[1];
+			((cl_ulong *)(aux))[18] = ((cl_ulong *)bT)[2];
+			((cl_ulong *)(aux))[19] = ((cl_ulong *)bT)[3];
+			((cl_ulong *)(aux))[20] = ((cl_ulong *)bT)[4];
+			((cl_ulong *)(aux))[21] = ((cl_ulong *)bT)[5];
+			((cl_ulong *)(aux))[22] = ((cl_ulong *)bT)[6];
+			((cl_ulong *)(aux))[23] = ((cl_ulong *)bT)[7];
+			((cl_ulong *)(aux))[24] = ((cl_ulong *)bT)[8];
+
+			((cl_ulong *)(aux))[25] = 0;
+			((cl_ulong *)(aux))[26] = 0;
+			((cl_ulong *)(aux))[27] = 0;
+			((cl_ulong *)(aux))[28] = 0;
+			((cl_ulong *)(aux))[29] = 0;
+			((cl_ulong *)(aux))[30] = 0;
+			((cl_ulong *)(aux))[31] = 0;
+
+			B2B_MIX(aux, aux + 16);
 
 #pragma unroll
-			for (; j < NONCE_SIZE_8;)
+			for (j = 0; j < NUM_SIZE_32; j += 2)
 			{
-				HOST_B2B_H(ctx, aux);
+				hsh = ivals[j >> 1];
+				hsh ^= ((cl_ulong *)(aux))[j >> 1] ^ ((cl_ulong *)(aux))[8 + (j >> 1)];
+
+				reverseBytesInt(((cl_uint*)(&hsh))[0], r[j]);
+				BHashes[THREADS_PER_ITER*j + tid] = r[j];
+				reverseBytesInt(((cl_uint*)(&hsh))[1], r[j + 1]);
+				BHashes[THREADS_PER_ITER*(j + 1) + tid] = r[j + 1];
+			}
+		}  // if
+	} // for
+}
+
+__kernel  void BlockMiningStep2(
+	// boundary for puzzle
+	global const cl_uint* bound,
+	// data:  mes  
+	global const cl_uint*  data,
+	// nonce base
+	const cl_ulong base,
+	// block height
+	const cl_uint height,
+	// precalculated hashes
+	global const cl_uint* hashes,
+	// indices of valid solutions
+	global cl_uint* valid,
+	// solution count
+	global cl_uint* vCount,
+	// intermediate Hashes
+	global cl_uint *BHashes
+)
+{
+
+	cl_uint const tid = get_global_id(0);
+	cl_uint const threadIdx = get_local_id(0);
+	cl_uint const thread_id = threadIdx & 7;
+	cl_uint const thrdblck_id = threadIdx;
+	cl_uint const hash_id = threadIdx >> 3;
+
+	cl_ulong aux[32] = { 0 };
+	cl_uint ind[32] = { 0 };
+	cl_uint r[9] = { 0 };
+
+
+	uint4 v1 = { 0,0,0,0 };
+	uint4 v2 = { 0,0,0,0 };
+	uint4 v3 = { 0,0,0,0 };
+	uint4 v4 = { 0,0,0,0 };
+
+
+	__local  cl_uint shared_index[64];
+	__local  cl_uint shared_data[512];
+
+	uint8_t j = 0;
+
+	if (tid < NONCES_PER_ITER)
+	{
+#pragma unroll
+		for (int k = 0; k < 8; k++)
+		{
+			r[k] = (BHashes[k*THREADS_PER_ITER + tid]);
+		}
+		//================================================================//
+		//  Generate indices
+		//================================================================//
+
+
+		((uint8_t *)r)[32] = ((uint8_t *)r)[0];
+		((uint8_t *)r)[33] = ((uint8_t *)r)[1];
+		((uint8_t *)r)[34] = ((uint8_t *)r)[2];
+		((uint8_t *)r)[35] = ((uint8_t *)r)[3];
 
 #pragma unroll
-				for (; ctx->c < BUF_SIZE_8 && j < NONCE_SIZE_8; ++j)
-				{
-					ctx->b[ctx->c++] = ((uint8_t*)non)[NONCE_SIZE_8 - j - 1];
-				}
-			}
-			//================================================================//
-			//  Finalize hashes
-			//================================================================//
+		for (int k = 0; k < K_LEN; k += 4)
+		{
+			ind[k] = r[k >> 2] & N_MASK;
+			ind[k + 1] = ((r[k >> 2] << 8) | (r[(k >> 2) + 1] >> 24)) & N_MASK;
+			ind[k + 2] = ((r[k >> 2] << 16) | (r[(k >> 2) + 1] >> 16)) & N_MASK;
+			ind[k + 3] = ((r[k >> 2] << 24) | (r[(k >> 2) + 1] >> 8)) & N_MASK;
+		}
 
-			HOST_B2B_H_LAST(ctx, aux);
 
+		//================================================================//
+		//  Calculate result
+		//================================================================//
+		shared_index[thrdblck_id] = ind[0];
+		barrier(CLK_LOCAL_MEM_FENCE);
+
+		shared_data[(hash_id << 3) + thread_id] = (hashes[(shared_index[hash_id] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 64] = (hashes[(shared_index[hash_id + 8] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 128] = (hashes[(shared_index[hash_id + 16] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 192] = (hashes[(shared_index[hash_id + 24] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 256] = (hashes[(shared_index[hash_id + 32] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 320] = (hashes[(shared_index[hash_id + 40] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 384] = (hashes[(shared_index[hash_id + 48] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 448] = (hashes[(shared_index[hash_id + 56] << 3) + thread_id]);
+		barrier(CLK_LOCAL_MEM_FENCE);
+
+
+		v1.x = shared_data[(thrdblck_id << 3) + 0];
+		v1.y = shared_data[(thrdblck_id << 3) + 1];
+		v1.z = shared_data[(thrdblck_id << 3) + 2];
+		v1.w = shared_data[(thrdblck_id << 3) + 3];
+		v3.x = shared_data[(thrdblck_id << 3) + 4];
+		v3.y = shared_data[(thrdblck_id << 3) + 5];
+		v3.z = shared_data[(thrdblck_id << 3) + 6];
+		v3.w = shared_data[(thrdblck_id << 3) + 7];
+
+		shared_index[thrdblck_id] = ind[1];
+		barrier(CLK_LOCAL_MEM_FENCE);
+
+		shared_data[(hash_id << 3) + thread_id] = (hashes[(shared_index[hash_id] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 64] = (hashes[(shared_index[hash_id + 8] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 128] = (hashes[(shared_index[hash_id + 16] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 192] = (hashes[(shared_index[hash_id + 24] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 256] = (hashes[(shared_index[hash_id + 32] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 320] = (hashes[(shared_index[hash_id + 40] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 384] = (hashes[(shared_index[hash_id + 48] << 3) + thread_id]);
+		shared_data[(hash_id << 3) + thread_id + 448] = (hashes[(shared_index[hash_id + 56] << 3) + thread_id]);
+		barrier(CLK_LOCAL_MEM_FENCE);
+
+		v2.x = shared_data[(thrdblck_id << 3) + 0];
+		v2.y = shared_data[(thrdblck_id << 3) + 1];
+		v2.z = shared_data[(thrdblck_id << 3) + 2];
+		v2.w = shared_data[(thrdblck_id << 3) + 3];
+		v4.x = shared_data[(thrdblck_id << 3) + 4];
+		v4.y = shared_data[(thrdblck_id << 3) + 5];
+		v4.z = shared_data[(thrdblck_id << 3) + 6];
+		v4.w = shared_data[(thrdblck_id << 3) + 7];
+
+
+
+		cl_uint CV = 0;
+		fn_Add(v1.x, v2.x, 0, r[0], CV);
+		fn_Add(v1.y, v2.y, CV, r[1], CV);
+		fn_Add(v1.z, v2.z, CV, r[2], CV);
+		fn_Add(v1.w, v2.w, CV, r[3], CV);
+		fn_Add(v3.x, v4.x, CV, r[4], CV);
+		fn_Add(v3.y, v4.y, CV, r[5], CV);
+		fn_Add(v3.z, v4.z, CV, r[6], CV);
+		fn_Add(v3.w, v4.w, CV, r[7], CV);
+		r[8] = 0; fn_Add(r[8], 0, CV, r[8], CV);
+
+
+		// remaining additions
 #pragma unroll
-			for (j = 0; j < NUM_SIZE_8; ++j)
-			{
-				((uint8_t*)r)[j] = (ctx->h[j >> 3] >> ((j & 7) << 3)) & 0xFF;
-			}
+		for (int k = 2; k < K_LEN; ++k)
+		{
+			shared_index[thrdblck_id] = ind[k];
+			barrier(CLK_LOCAL_MEM_FENCE);
 
-			cl_ulong h2;
-			((uint8_t*)&h2)[0] = ((uint8_t*)r)[31];
-			((uint8_t*)&h2)[1] = ((uint8_t*)r)[30];
-			((uint8_t*)&h2)[2] = ((uint8_t*)r)[29];
-			((uint8_t*)&h2)[3] = ((uint8_t*)r)[28];
-			((uint8_t*)&h2)[4] = ((uint8_t*)r)[27];
-			((uint8_t*)&h2)[5] = ((uint8_t*)r)[26];
-			((uint8_t*)&h2)[6] = ((uint8_t*)r)[25];
-			((uint8_t*)&h2)[7] = ((uint8_t*)r)[24];
+			shared_data[(hash_id << 3) + thread_id] = (hashes[(shared_index[hash_id] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 64] = (hashes[(shared_index[hash_id + 8] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 128] = (hashes[(shared_index[hash_id + 16] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 192] = (hashes[(shared_index[hash_id + 24] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 256] = (hashes[(shared_index[hash_id + 32] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 320] = (hashes[(shared_index[hash_id + 40] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 384] = (hashes[(shared_index[hash_id + 48] << 3) + thread_id]);
+			shared_data[(hash_id << 3) + thread_id + 448] = (hashes[(shared_index[hash_id + 56] << 3) + thread_id]);
+			barrier(CLK_LOCAL_MEM_FENCE);
 
-			cl_uint h3 = h2 % N_LEN;
-			uint8_t iii[8];
-			iii[0] = ((uint8_t *)(&h3))[3];
-			iii[1] = ((uint8_t *)(&h3))[2];
-			iii[2] = ((uint8_t *)(&h3))[1];
-			iii[3] = ((uint8_t *)(&h3))[0];
-
-			//====================================================================//
-			//  Initialize context
-			//====================================================================//
-			//memset(ctx->b, 0, BUF_SIZE_8);
-			#pragma unroll
-				for (int am = 0; am < BUF_SIZE_8; am++)
-				{
-					ctx->b[am] = 0;
-				}
-			B2B_IV(ctx->h);
+			v1.x = shared_data[(thrdblck_id << 3) + 0];
+			v1.y = shared_data[(thrdblck_id << 3) + 1];
+			v1.z = shared_data[(thrdblck_id << 3) + 2];
+			v1.w = shared_data[(thrdblck_id << 3) + 3];
+			v2.x = shared_data[(thrdblck_id << 3) + 4];
+			v2.y = shared_data[(thrdblck_id << 3) + 5];
+			v2.z = shared_data[(thrdblck_id << 3) + 6];
+			v2.w = shared_data[(thrdblck_id << 3) + 7];
 
 
 
-			ctx->h[0] ^= 0x01010000 ^ NUM_SIZE_8;
-			//memset(ctx->t, 0, 16);
-			ctx->t[0] = 0;
-			ctx->t[1] = 0;
-			ctx->c = 0;
-
-			//====================================================================//
-			//  Hash 
-			//====================================================================//
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < HEIGHT_SIZE; ++j)
-			{
-				ctx->b[ctx->c++] = iii[j];
-			}
-
-			//====================================================================//
-			//  Hash height
-			//====================================================================//
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < HEIGHT_SIZE; ++j)
-			{
-				ctx->b[ctx->c++] = ((const uint8_t *)&height)[j/*HEIGHT_SIZE - j - 1*/];
-
-			}
-
-
-			//====================================================================//
-			//  Hash constant message
-			//====================================================================//
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < CONST_MES_SIZE_8; ++j)
-			{
-				ctx->b[ctx->c++]
-					= (
-						!((7 - (j & 7)) >> 1)
-						* ((j >> 3) >> (((~(j & 7)) & 1) << 3))
-						) & 0xFF;
-			}
-
-
-			while (j < CONST_MES_SIZE_8)
-			{
-				HOST_B2B_H(ctx, aux);
-
-				for (; ctx->c < BUF_SIZE_8 && j < CONST_MES_SIZE_8; ++j)
-				{
-					ctx->b[ctx->c++]
-						= (
-							!((7 - (j & 7)) >> 1)
-							* ((j >> 3) >> (((~(j & 7)) & 1) << 3))
-							) & 0xFF;
-				}
-			}
-
-			//====================================================================//
-			//  Finalize hash
-			//====================================================================//
-
-
-
-			HOST_B2B_H_LAST(ctx, aux);
-
-
-#pragma unroll
-			for (j = 0; j < NUM_SIZE_8; ++j)
-			{
-				((uint8_t*)r)[j] = (ctx->h[j >> 3] >> ((j & 7) << 3)) & 0xFF;
-				//((uint8_t*)r)[NUM_SIZE_8 - j - 1] = (ctx->h[j >> 3] >> ((j & 7) << 3)) & 0xFF;
-			}
-
-			//====================================================================//
-
-			//====================================================================//
-			//  Initialize context
-			//====================================================================//
-			//memset(ctx->b, 0, BUF_SIZE_8);
-#pragma unroll
-			for (int am = 0; am < BUF_SIZE_8; am++)
-			{
-				ctx->b[am] = 0;
-			}
-			B2B_IV(ctx->h);
-
-
-
-			ctx->h[0] ^= 0x01010000 ^ NUM_SIZE_8;
-			//memset(ctx->t, 0, 16);
-			ctx->t[0] = 0;
-			ctx->t[1] = 0;
-			ctx->c = 0;
-
-			//====================================================================//
-			//  Hash 
-			//====================================================================//
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < NUM_SIZE_8 - 1; ++j)
-			{
-				ctx->b[ctx->c++] = ((const uint8_t *)r)[j + 1];
-			}
-
-			//====================================================================//
-			//  Hash message
-			//====================================================================//
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < NUM_SIZE_8; ++j)
-			{
-				ctx->b[ctx->c++] = ((global const uint8_t *)mes)[j];
-			}
-
-
-
-			while (j < NUM_SIZE_8)
-			{
-				HOST_B2B_H(ctx, aux);
-
-				while (ctx->c < BUF_SIZE_8 && j < NUM_SIZE_8)
-				{
-					ctx->b[ctx->c++] = ((global const uint8_t *)mes)[j++];
-				}
-			}
-
-			//================================================================//
-			//  Hash nonce
-			//================================================================//
-
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < NONCE_SIZE_8; ++j)
-			{
-				ctx->b[ctx->c++] = ((uint8_t *)non)[NONCE_SIZE_8 - j - 1];
-			}
-
-#pragma unroll
-			for (; j < NONCE_SIZE_8;)
-			{
-				HOST_B2B_H(ctx, aux);
-
-#pragma unroll
-				for (; ctx->c < BUF_SIZE_8 && j < NONCE_SIZE_8; ++j)
-				{
-					ctx->b[ctx->c++] = ((uint8_t*)non)[NONCE_SIZE_8 - j - 1];
-				}
-			}
-			//====================================================================//
-			//  Finalize hash
-			//====================================================================//
-
-
-
-			HOST_B2B_H_LAST(ctx, aux);
-
-
-#pragma unroll
-			for (j = 0; j < NUM_SIZE_8; ++j)
-			{
-				((uint8_t*)r)[(j & 0xFFFFFFFC) + (3 - (j & 3))] = (ctx->h[j >> 3] >> ((j & 7) << 3)) & 0xFF;
-				//((uint8_t*)r)[NUM_SIZE_8 - j - 1] = (ctx->h[j >> 3] >> ((j & 7) << 3)) & 0xFF;
-			}
-			//================================================================//
-			//  Generate indices
-			//================================================================//
-
-#pragma unroll
-			for (int i = 1; i < INDEX_SIZE_8; ++i)
-			{
-				((uint8_t*)r)[NUM_SIZE_8 + i] = ((uint8_t*)r)[i];
-			}
-
-#pragma unroll
-			for (int k = 0; k < K_LEN; k += INDEX_SIZE_8)
-			{
-				ind[k] = r[k >> 2] & N_MASK;
-
-#pragma unroll
-				for (int i = 1; i < INDEX_SIZE_8; ++i)
-				{
-					ind[k + i] = ((r[k >> 2] << (i << 3)) | (r[(k >> 2) + 1] >> (32 - (i << 3)))) & N_MASK;
-				}
-			}
-			//================================================================//
-			//  Calculate result
-			//================================================================//
-
-			// first addition of hashes -> r
-			fn_Add(hashes[ind[0] << 3], hashes[ind[1] << 3], 0, r[0], CV);
-			// asm volatile ("add.cc.u32 %0, %1, %2;":"=r"(r[0]): "r"(hashes[ind[0] << 3]), "r"(hashes[ind[1] << 3]));
-#pragma unroll
-			for (int i = 1; i < 8; ++i)
-			{
-				fn_Add(hashes[(ind[0] << 3) + i], hashes[(ind[1] << 3) + i], CV, r[i], CV);
-				//asm volatile ("addc.cc.u32 %0, %1, %2;":"=r"(r[i]):"r"(hashes[(ind[0] << 3) + i]),"r"(hashes[(ind[1] << 3) + i]));
-			}
-			r[8] = 0;
+			fn_Add(r[0], v1.x, CV, r[0], CV);
+			fn_Add(r[1], v1.y, CV, r[1], CV);
+			fn_Add(r[2], v1.z, CV, r[2], CV);
+			fn_Add(r[3], v1.w, CV, r[3], CV);
+			fn_Add(r[4], v2.x, CV, r[4], CV);
+			fn_Add(r[5], v2.y, CV, r[5], CV);
+			fn_Add(r[6], v2.z, CV, r[6], CV);
+			fn_Add(r[7], v2.w, CV, r[7], CV);
 			fn_Add(r[8], 0, CV, r[8], CV);
-			// asm volatile ("addc.u32 %0, 0, 0;": "=r"(r[8]));
-			// remaining additions
+		}
 
+
+		//--------------------hash(f)--------------------
+		//====================================================================//
+		//  Initialize context
+		//====================================================================//
+		B2B_IV(aux);
+		B2B_IV(aux + 8);
+		aux[0] = ivals[0];
+		((cl_ulong *)(aux))[12] ^= 32;
+		((cl_ulong *)(aux))[13] ^= 0;
+
+		((cl_ulong *)(aux))[14] = ~((cl_ulong *)(aux))[14];
+
+		uint8_t *bb = (uint8_t *)(&(((cl_ulong *)(aux))[16]));
+		for (j = 0; j < NUM_SIZE_8; ++j)
+		{
+			bb[j] = ((const uint8_t *)r)[NUM_SIZE_8 - j - 1];
+		}
+
+		((cl_ulong *)(aux))[20] = 0;
+		((cl_ulong *)(aux))[21] = 0;
+		((cl_ulong *)(aux))[22] = 0;
+		((cl_ulong *)(aux))[23] = 0;
+		((cl_ulong *)(aux))[24] = 0;
+		((cl_ulong *)(aux))[25] = 0;
+		((cl_ulong *)(aux))[26] = 0;
+		((cl_ulong *)(aux))[27] = 0;
+		((cl_ulong *)(aux))[28] = 0;
+		((cl_ulong *)(aux))[29] = 0;
+		((cl_ulong *)(aux))[30] = 0;
+		((cl_ulong *)(aux))[31] = 0;
+
+		B2B_MIX(aux, aux + 16);
+
+		cl_ulong hsh;
 #pragma unroll
-			for (int k = 2; k < K_LEN; ++k)
-			{
-				fn_Add(r[0], hashes[ind[k] << 3], 0, r[0], CV);
-				//asm volatile ("add.cc.u32 %0, %0, %1;":"+r"(r[0]): "r"(hashes[ind[k] << 3]));
-
-
-#pragma unroll
-				for (int i = 1; i < 8; ++i)
-				{
-					fn_Add(r[i], hashes[(ind[k] << 3) + i], CV, r[i], CV);
-					//asm volatile ("addc.cc.u32 %0, %0, %1;":"+r"(r[i]): "r"(hashes[(ind[k] << 3) + i]));
-				}
-				fn_Add(r[8], 0, CV, r[8], CV);
-				//asm volatile ("addc.u32 %0, %0, 0;": "+r"(r[8]));
-			}
-
-
-			//--------------------hash f
-			//====================================================================//
-			//  Initialize context
-			//====================================================================//
-			//memset(ctx->b, 0, BUF_SIZE_8);
-#pragma unroll
-			for (int am = 0; am < BUF_SIZE_8; am++)
-			{
-				ctx->b[am] = 0;
-			}
-			B2B_IV(ctx->h);
-
-
-
-			ctx->h[0] ^= 0x01010000 ^ NUM_SIZE_8;
-			//memset(ctx->t, 0, 16);
-			ctx->t[0] = 0;
-			ctx->t[1] = 0;
-			ctx->c = 0;
-
-
-			//--------------hash 
-#pragma unroll
-			for (j = 0; ctx->c < BUF_SIZE_8 && j < NUM_SIZE_8; ++j)
-			{
-				ctx->b[ctx->c++] = ((const uint8_t *)r)[NUM_SIZE_8 - j - 1];
-			}
-
-			//====================================================================//
-			//  Finalize hash
-			//====================================================================//
-
-
-			HOST_B2B_H_LAST(ctx, aux);
-
-
-#pragma unroll
-			for (j = 0; j < NUM_SIZE_8; ++j)
-			{
-				((uint8_t*)r)[NUM_SIZE_8 - j - 1] = (ctx->h[j >> 3] >> ((j & 7) << 3)) & 0xFF;
-			}
-	
-
-			//================================================================//
-			//  Dump result to global memory -- LITTLE ENDIAN
-			//================================================================//
-			j = ((cl_ulong*)r)[3] < ((cl_ulong global*)bound)[3] || ((cl_ulong*)r)[3] == ((cl_ulong global*)bound)[3] && (((cl_ulong*)r)[2] < ((cl_ulong global*)bound)[2] || ((cl_ulong*)r)[2] == ((cl_ulong global*)bound)[2] && (((cl_ulong*)r)[1] < ((cl_ulong global*)bound)[1] || ((cl_ulong*)r)[1] == ((cl_ulong global*)bound)[1] && ((cl_ulong*)r)[0] < ((cl_ulong global*)bound)[0]));
-
-			if(j)//
-			{
-
-				cl_uint oldC =  atomic_inc(vCount);
-
-				if(oldC < MAX_POOL_RES)
-				//if(oldC == 0)
-				{
-				
-					valid[oldC] = tid + 1;
-
-				}
-
-			}
+		for (j = 0; j < NUM_SIZE_32; j += 2)
+		{
+			hsh = ivals[j >> 1];
+			hsh ^= ((cl_ulong *)(aux))[j >> 1] ^ ((cl_ulong *)(aux))[8 + (j >> 1)];
+			reverseBytesInt(((cl_uint*)&hsh)[0], r[7 - j]);
+			reverseBytesInt(((cl_uint*)&hsh)[1], r[7 - j - 1]);
 
 		}
-		barrier(CLK_LOCAL_MEM_FENCE);
-	}
-	return;
+		//================================================================//
+		//  Dump result to global memory -- LITTLE ENDIAN
+		//================================================================//
+		j = ((cl_ulong*)r)[3] < ((cl_ulong global*)bound)[3] || ((cl_ulong*)r)[3] == ((cl_ulong global*)bound)[3] && (((cl_ulong*)r)[2] < ((cl_ulong global*)bound)[2] || ((cl_ulong*)r)[2] == ((cl_ulong global*)bound)[2] && (((cl_ulong*)r)[1] < ((cl_ulong global*)bound)[1] || ((cl_ulong*)r)[1] == ((cl_ulong global*)bound)[1] && ((cl_ulong*)r)[0] < ((cl_ulong global*)bound)[0]));
+
+		if (j)//
+		{
+			cl_uint oldC = atomic_inc(vCount);
+
+			if (oldC < MAX_POOL_RES)
+			{
+				valid[oldC] = tid + 1;
+			}
+		}
+	} // if
 }
