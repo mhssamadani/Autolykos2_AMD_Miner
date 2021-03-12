@@ -43,6 +43,7 @@ struct info_t
 	int keepPrehash;
 	char to[MAX_URL_SIZE];
 	char endJob[MAX_URL_SIZE];
+	bool doJob;
 	uint8_t Hblock[HEIGHT_SIZE];
 
 	char    stratumMode;

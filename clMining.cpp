@@ -4,7 +4,7 @@ MiningClass::MiningClass(CLWarpper *cll)
 {
 	cl = cll;
 
-	const  string buildOptions = " -cl-std=CL2 -I .";
+	const  string buildOptions = " -w -I .";
 	program = cl->buildProgramFromFile("MiningKernel.cl", buildOptions);
 
 	int tr;
