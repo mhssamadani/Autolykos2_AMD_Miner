@@ -68,10 +68,10 @@ __kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
 
 			((cl_ulong *)(aux))[14] = ~((cl_ulong *)(aux))[14];
 
-			((cl_ulong *)(aux))[16] = ((cl_ulong *)data)[0];
-			((cl_ulong *)(aux))[17] = ((cl_ulong *)data)[1];
-			((cl_ulong *)(aux))[18] = ((cl_ulong *)data)[2];
-			((cl_ulong *)(aux))[19] = ((cl_ulong *)data)[3];
+			((cl_ulong *)(aux))[16] = ((global cl_ulong *)data)[0];
+			((cl_ulong *)(aux))[17] = ((global cl_ulong *)data)[1];
+			((cl_ulong *)(aux))[18] = ((global cl_ulong *)data)[2];
+			((cl_ulong *)(aux))[19] = ((global cl_ulong *)data)[3];
 			((cl_ulong *)(aux))[20] = tmp;
 			((cl_ulong *)(aux))[21] = 0;
 			((cl_ulong *)(aux))[22] = 0;
@@ -114,10 +114,12 @@ __kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
 
 			h3 = h2 % N_LEN;
 			//--------------------------read hash from lookup
+			cl_uint tmpL;
 #pragma unroll 8
 			for (int i = 0; i < 8; ++i)
 			{
-				reverseBytesInt(hashes[(h3 << 3) + i], r[7 - i]);
+				tmpL = hashes[(h3 << 3) + i];
+				reverseBytesInt(tmpL, r[7 - i]);
 			}
 			//------------------------------------------------------
 
@@ -136,7 +138,7 @@ __kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
 				bT[j] = ((uint8_t *)r)[j + 1];
 #pragma unroll 
 			for (j = 31; j < 63; ++j)
-				bT[j] = ((uint8_t *)data)[j - 31];
+				bT[j] = ((global uint8_t *)data)[j - 31];
 #pragma unroll 
 			for (j = 63; j < 71; ++j)
 				bT[j] = ((uint8_t *)&tmp)[j - 63];

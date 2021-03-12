@@ -3,7 +3,7 @@ PreHashClass::PreHashClass(CLWarpper *cll)
 {
 	cl = cll;
 
-	const  string buildOptions = " -w -I .";
+	const  string buildOptions = "  -w -I .";
 	program = cl->buildProgramFromFile("PreHashKernel.cl", buildOptions);
 
 }

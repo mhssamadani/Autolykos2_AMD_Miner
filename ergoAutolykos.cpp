@@ -180,6 +180,7 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 	cl_ulong base = 0;
 	cl_ulong EndNonce = 0;
 	cl_uint height = 0;
+
 	PreHashClass *ph = new PreHashClass(clw);
 	MiningClass *min = new MiningClass(clw);
 
@@ -223,6 +224,10 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 			}
 
 			state = STATE_CONTINUE;
+		}
+		while (!info->doJob)
+		{
+			//LOG(INFO) << "GPU " << deviceId << " problem in proxy ";
 		}
 
 		uint_t controlId = info->blockId.load();
@@ -271,9 +276,18 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 
 			ret = clw->CopyBuffer(data_d, hdata_d, (NUM_SIZE_8 ) * sizeof(char), false);
 
+			ch::milliseconds startP = ch::duration_cast<ch::milliseconds>(
+				ch::system_clock::now().time_since_epoch()
+				);
+
 			//LOG(INFO) <<  "Starting prehashing with new block data";
 			ph->Prehash(height, hashes_d);
 
+			ch::milliseconds ms = ch::milliseconds::zero();
+			ms = ch::duration_cast<ch::milliseconds>(
+				ch::system_clock::now().time_since_epoch()
+				) - startP;
+			LOG(INFO) << "Prehash time: " << ms.count() << " ms";
 
 			//LOG(INFO) << "Starting InitMining";
 			//min->InitMining(&ctx_h, (cl_uint*)mes_h, NUM_SIZE_8);
