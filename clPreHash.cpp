@@ -13,6 +13,7 @@ PreHashClass::~PreHashClass()
 }
 
 int PreHashClass::Prehash(
+	uint64_t N_LEN,
 	// data: height
 	cl_uint  height,
 	// hashes
@@ -25,7 +26,8 @@ int PreHashClass::Prehash(
 	cl_kernel kernel = program->getKernel("InitPrehash");
 
 	cl->checkError(clSetKernelArg(kernel, 0, sizeof(cl_uint), &height));
-	cl->checkError(clSetKernelArg(kernel, 1, sizeof(cl_mem), &hashes));
+	cl->checkError(clSetKernelArg(kernel, 1, sizeof(cl_uint), &N_LEN));
+	cl->checkError(clSetKernelArg(kernel, 2, sizeof(cl_mem), &hashes));
 
 
 

@@ -21,6 +21,7 @@ public:
 	~PreHashClass();
 
 	   	int Prehash(
+		uint64_t N_LEN,
 		// data: height
 		cl_uint  height,
 		// hashes

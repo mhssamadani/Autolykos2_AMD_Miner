@@ -29,6 +29,29 @@ void ergoAutolykos::SenderThread(info_t * info, BlockQueue<MinerShare>* shQueue)
 
 
 }
+uint32_t calcN(uint32_t Hblock)
+{
+	uint32_t headerHeight;
+	((uint8_t *)&headerHeight)[0] = ((uint8_t *)&Hblock)[3];
+	((uint8_t *)&headerHeight)[1] = ((uint8_t *)&Hblock)[2];
+	((uint8_t *)&headerHeight)[2] = ((uint8_t *)&Hblock)[1];
+	((uint8_t *)&headerHeight)[3] = ((uint8_t *)&Hblock)[0];
+
+	uint32_t newN = INIT_N_LEN;
+	if (headerHeight < IncreaseStart)
+		newN = INIT_N_LEN;
+	else if (headerHeight >= IncreaseEnd)
+		newN = MAX_N_LEN;
+	else
+	{
+		uint32_t itersNumber = (headerHeight - IncreaseStart) / IncreasePeriodForN + 1;
+		for (uint32_t i = 0; i < itersNumber; i++)
+		{
+			newN = newN / 100 * 105;
+		}
+	}
+	return newN;
+}
 ////////////////////////////////////////////////////////////////////////////////
 //  Miner thread cycle
 ////////////////////////////////////////////////////////////////////////////////
@@ -128,13 +151,13 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 
 	// precalculated hashes
 	// N_LEN * NUM_SIZE_8 bytes // 2 GiB
-	cl_mem hashes_d = clw->Createbuffer((cl_uint)N_LEN * NUM_SIZE_8 * sizeof(char), CL_MEM_READ_WRITE);
+	cl_mem hashes_d = clw->Createbuffer((cl_uint)info->N_LEN * NUM_SIZE_8 * sizeof(char), CL_MEM_READ_WRITE);
 	if (hashes_d == NULL)
 	{
 		LOG(INFO) << "GPU " << deviceId << "error in  allocating hashes_d";
 		return;
 	}
-	allocatedMem += (cl_uint)N_LEN * NUM_SIZE_8 * sizeof(char);
+	allocatedMem += (cl_uint)info->N_LEN * NUM_SIZE_8 * sizeof(char);
 
 	cl_mem BHashes = clw->Createbuffer((NUM_SIZE_8)*THREADS_PER_ITER * sizeof(cl_uint), CL_MEM_READ_WRITE);
 	if (BHashes == NULL)
@@ -189,7 +212,7 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 	start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 
 
-
+	uint32_t oldN = INIT_N_LEN;
 	// wait for the very first block to come before starting
 	while (info->blockId.load() == 0) {}
 	do
@@ -239,6 +262,18 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 			info->info_mutex.lock();
 
 			memcpy(&height, info->Hblock, HEIGHT_SIZE);
+			info->N_LEN = calcN(height);
+			if (oldN != info->N_LEN)
+			{
+				clReleaseMemObject(hashes_d);
+				hashes_d = clw->Createbuffer((cl_uint)info->N_LEN * NUM_SIZE_8 * sizeof(char), CL_MEM_READ_WRITE);
+				if (hashes_d == NULL)
+				{
+					LOG(INFO) << "GPU " << deviceId << "error in  allocating hashes_d";
+						return;
+				}
+				oldN = info->N_LEN;
+			}
 
 			memcpy(mes_h, info->mes, NUM_SIZE_8);
 
@@ -281,7 +316,7 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 				);
 
 			//LOG(INFO) <<  "Starting prehashing with new block data";
-			ph->Prehash(height, hashes_d);
+			ph->Prehash(info->N_LEN,height, hashes_d);
 
 			ch::milliseconds ms = ch::milliseconds::zero();
 			ms = ch::duration_cast<ch::milliseconds>(
@@ -305,7 +340,7 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 		clw->CopyBuffer(indices_d, hindices_d, MAX_POOL_RES*sizeof(cl_uint), false);
 
 
-		min->hBlockMining(bound_d, data_d /*mes*/, base, EndNonce, height, hashes_d,indices_d,count_d,BHashes);
+		min->hBlockMining(bound_d, data_d /*mes*/, base, EndNonce, height, hashes_d,indices_d,count_d,info->N_LEN, BHashes);
 		VLOG(1) << "Trying to find solution";
 
 		// restart iteration if new block was found
@@ -340,7 +375,7 @@ void ergoAutolykos::MinerThread(CLWarpper *clw, const  int deviceId, const int t
 				if ( (*((uint64_t *)nonce)) <= endNonceT )
 				{
 
-					bool checksol = solVerifier.RunAlg(info->mes, nonce,info->bound,info->Hblock);
+					bool checksol = solVerifier.RunAlg(info->mes, nonce,info->bound,info->Hblock,info->N_LEN);
 					if (checksol)
 					{
 						MinerShare share(*((uint64_t *)nonce));

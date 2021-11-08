@@ -89,6 +89,7 @@ inline void BlakeCompress(ulong *h, const ulong *m, ulong t, ulong f)
 __kernel void InitPrehash(
 	// data: height
 	const cl_uint  h,
+	const cl_uint  n_len,
 	// hashes
 	global cl_uint * hashes
 )
@@ -100,7 +101,7 @@ __kernel void InitPrehash(
 
 	tid = get_global_id(0);
 
-	if (tid < N_LEN)
+	if (tid < n_len)
 	{
 		ulong h[8];
 		ulong b[16];
@@ -164,7 +165,6 @@ __kernel void InitPrehash(
 		//====================================================================//
 #pragma unroll
 		for (int i = 0; i < 4; ++i) ((__global ulong *)hashes)[(tid + 1) * 4 - i - 1] = as_ulong(as_uchar8(h[i]).s76543210);
-
 		((__global uchar *)hashes)[tid * 32 + 31] = 0;
 
 	}

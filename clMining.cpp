@@ -66,13 +66,16 @@ void MiningClass::hBlockMining(
 	// indices of valid solutions
 	cl_mem valid,
 	cl_mem vCount,
-	cl_mem BHashes
+	uint64_t N_LEN , 
+	cl_mem BHashes 
+	
 	)
 {
 	cl_kernel kernelStep1 = program->getKernel("BlockMiningStep1");
 	int id = 0;
 	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_mem), &mes));
 	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_ulong), &base));
+	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_uint), &N_LEN));
 	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_mem), &hashes));
 	cl->checkError(clSetKernelArg(kernelStep1, id++, sizeof(cl_mem), &BHashes));
 
@@ -86,8 +89,10 @@ void MiningClass::hBlockMining(
 	cl->checkError(err);
 
 	//--------------------------------
+
 	cl_kernel kernelStep2 = program->getKernel("BlockMiningStep2");
 	id = 0;
+	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_uint), &N_LEN));
 	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &bound));
 	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_mem), &mes));
 	cl->checkError(clSetKernelArg(kernelStep2, id++, sizeof(cl_ulong), &base));

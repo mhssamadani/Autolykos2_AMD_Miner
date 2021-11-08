@@ -46,7 +46,14 @@ typedef unsigned __int32        cl_uint;
 #define K_LEN              32
 
 // N: number of precalculated hashes
-#define N_LEN             0x4000000// kamtar az 64(BLOK_DIM) nabashad
+#define INIT_N_LEN 0x4000000
+#define MAX_N_LEN  0x7FC9FF98
+#define IncreaseStart (600*1024)
+#define IncreaseEnd (4198400)
+#define IncreasePeriodForN (50*1024)
+
+
+
 #define Sol_Index 0x3381BF + 10
 ////////////////////////////////////////////////////////////////////////////////
 //  PARAMETERS: Heuristic prehash kernel parameters
@@ -206,17 +213,6 @@ struct ctx_t;
     * BLOCK_DIM                                                                \
 )
 
-// necessary workspace size
-#define WORKSPACE_SIZE_8                                                       \
-(                                                                              \
-    (                                                                          \
-        (cl_uint)((N_LEN << 1) + 1) * INDEX_SIZE_8                            \
-        > NONCES_PER_ITER * (NUM_SIZE_8  + (INDEX_SIZE_8 << 1)) + INDEX_SIZE_8 \
-    )?                                                                         \
-    (cl_uint)((N_LEN << 1) + 1) * INDEX_SIZE_8:                               \
-    NONCES_PER_ITER * (NUM_SIZE_8  + (INDEX_SIZE_8 << 1)) + INDEX_SIZE_8       \
-)
-
 //============================================================================//
 //  GPU shared memory
 //============================================================================//
@@ -242,11 +238,7 @@ struct ctx_t;
 #define ROUND_NC_SIZE_32   (NC_SIZE_32_BLOCK * BLOCK_DIM)
 
 //============================================================================//
-//  Heuristic CUDA parameters
 //============================================================================//
-// mod 2^26 mask
-#define N_MASK             (N_LEN - 1)
-
 // number of threads per iteration
 #define THREADS_PER_ITER   (NONCES_PER_ITER / NONCES_PER_THREAD)
 

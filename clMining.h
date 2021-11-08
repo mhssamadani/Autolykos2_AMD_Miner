@@ -47,7 +47,8 @@ public:
 		// indices of valid solutions
 		cl_mem valid,
 		cl_mem vCount,
-		cl_mem BHashes = NULL
+		uint64_t N_LEN,
+		cl_mem BHashes = NULL 
 	);
 };
 

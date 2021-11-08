@@ -76,7 +76,7 @@ void AutolykosAlg::Blake2b256(const char * in,
 
 
 
-void AutolykosAlg::GenIdex(const char * in, const int len, uint32_t* index)
+void AutolykosAlg::GenIdex(const char * in, const int len, uint32_t* index, uint64_t N_LEN)
 {
 	int a = INDEX_SIZE_8;
 	int b = K_LEN;
@@ -138,7 +138,8 @@ bool AutolykosAlg::RunAlg(
 	uint8_t *message,
 	uint8_t *nonce,
 	uint8_t *bPool,
-	uint8_t *height
+	uint8_t *height,
+	uint64_t N_LEN
 	)
 {
 
@@ -147,9 +148,13 @@ bool AutolykosAlg::RunAlg(
 	uint32_t ilen = 0;
 	LittleEndianOf256ToDecStr((uint8_t *)bPool, bound_str, &ilen);
 
+	
 
 	uint32_t index[K_LEN];
 	LittleEndianToHexStr(nonce, NONCE_SIZE_8, n_str);
+	//memcpy(n_str , "0000000000003105" , NONCE_SIZE_4);
+	//uint32_t tttt;
+	//HexStrToLittleEndian(n_str, NONCE_SIZE_4, (uint8_t *)&tttt, NONCE_SIZE_8);
 	BigEndianToHexStr(height, HEIGHT_SIZE, h_str);
 	uint8_t beN[NONCE_SIZE_8];
 	HexStrToBigEndian(n_str, NONCE_SIZE_8 * 2, beN, NONCE_SIZE_8);
@@ -157,6 +162,11 @@ bool AutolykosAlg::RunAlg(
 	uint8_t beH[HEIGHT_SIZE];
 	HexStrToBigEndian(h_str, HEIGHT_SIZE * 2, beH, HEIGHT_SIZE);
 
+	uint32_t littleH;
+	HexStrToLittleEndian(h_str, HEIGHT_SIZE * 2,(uint8_t *)&littleH, HEIGHT_SIZE);
+
+	uint32_t littleN;
+	HexStrToLittleEndian(n_str, NONCE_SIZE_8 * 2, (uint8_t *)&littleN, NONCE_SIZE_8);
 
 	uint8_t h1[NUM_SIZE_8];
 	memcpy(m_n, message, NUM_SIZE_8);
@@ -175,7 +185,7 @@ bool AutolykosAlg::RunAlg(
 	tmpL1[7] = h1[24];
 	memcpy(&h2, tmpL1, 8);
 
-	unsigned int h3 = h2 % N_LEN;
+	uint64_t  h3 = h2 % N_LEN;
 
 	uint8_t iii[4];
 	iii[0] = ((char *)(&h3))[3];
@@ -195,7 +205,7 @@ bool AutolykosAlg::RunAlg(
 	memcpy(seed, ff, NUM_SIZE_8 - 1);
 	memcpy(seed + NUM_SIZE_8 - 1, message, NUM_SIZE_8);
 	memcpy(seed + NUM_SIZE_8 - 1 + NUM_SIZE_8, beN, NONCE_SIZE_8);
-	GenIdex((const char*)seed, NUM_SIZE_8 - 1 + NUM_SIZE_8 + NONCE_SIZE_8, index);
+	GenIdex((const char*)seed, NUM_SIZE_8 - 1 + NUM_SIZE_8 + NONCE_SIZE_8, index,N_LEN);
 
 
 

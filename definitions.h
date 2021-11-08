@@ -45,6 +45,7 @@ struct info_t
 	char endJob[MAX_URL_SIZE];
 	bool doJob;
 	uint8_t Hblock[HEIGHT_SIZE];
+	uint64_t N_LEN = INIT_N_LEN;
 
 	char    stratumMode;
 	uint8_t extraNonceStart[NONCE_SIZE_8];

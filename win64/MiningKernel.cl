@@ -22,6 +22,8 @@ const  __constant cl_ulong ivals[8] = {
 
 
 __kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
+				const cl_uint  n_len,
+
 	// precalculated hashes
 	global const cl_uint* hashes,
 	// intermediate Hashes
@@ -111,15 +113,16 @@ __kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
 			//((uint8_t*)&h2)[5] = ((uint8_t*)r)[26];
 			//((uint8_t*)&h2)[6] = ((uint8_t*)r)[25];
 			//((uint8_t*)&h2)[7] = ((uint8_t*)r)[24];
+			h3 = h2 % n_len;
 
-			h3 = h2 % N_LEN;
-			//--------------------------read hash from lookup
+		//--------------------------read hash from lookup
 			cl_uint tmpL;
 #pragma unroll 8
-			for (int i = 0; i < 8; ++i)
+			for (int i = 0; i < 32; ++i)
 			{
-				tmpL = hashes[(h3 << 3) + i];
-				reverseBytesInt(tmpL, r[7 - i]);
+				//tmpL = hashes[(h3 << 3) + i];
+				//reverseBytesInt(tmpL, r[7 - i]);
+				((uint8_t *)r)[31-i] = ((global uint8_t *)hashes)[h3 * 32 + i];
 			}
 			//------------------------------------------------------
 
@@ -180,6 +183,7 @@ __kernel void BlockMiningStep1(global const cl_uint *data, const cl_ulong base,
 }
 
 __kernel  void BlockMiningStep2(
+	const cl_uint N_MASK,
 	// boundary for puzzle
 	global const cl_uint* bound,
 	// data:  mes  
@@ -238,15 +242,15 @@ __kernel  void BlockMiningStep2(
 		((uint8_t *)r)[34] = ((uint8_t *)r)[2];
 		((uint8_t *)r)[35] = ((uint8_t *)r)[3];
 
+
 #pragma unroll
 		for (int k = 0; k < K_LEN; k += 4)
 		{
-			ind[k] = r[k >> 2] & N_MASK;
-			ind[k + 1] = ((r[k >> 2] << 8) | (r[(k >> 2) + 1] >> 24)) & N_MASK;
-			ind[k + 2] = ((r[k >> 2] << 16) | (r[(k >> 2) + 1] >> 16)) & N_MASK;
-			ind[k + 3] = ((r[k >> 2] << 24) | (r[(k >> 2) + 1] >> 8)) & N_MASK;
+			ind[k] = r[k >> 2] % N_MASK;
+			ind[k + 1] = ((r[k >> 2] << 8) | (r[(k >> 2) + 1] >> 24)) % N_MASK;
+			ind[k + 2] = ((r[k >> 2] << 16) | (r[(k >> 2) + 1] >> 16)) % N_MASK;
+			ind[k + 3] = ((r[k >> 2] << 24) | (r[(k >> 2) + 1] >> 8)) % N_MASK;
 		}
-
 
 		//================================================================//
 		//  Calculate result
@@ -349,6 +353,7 @@ __kernel  void BlockMiningStep2(
 			fn_Add(r[8], 0, CV, r[8], CV);
 		}
 
+		
 
 		//--------------------hash(f)--------------------
 		//====================================================================//
@@ -398,7 +403,8 @@ __kernel  void BlockMiningStep2(
 		//================================================================//
 		j = ((cl_ulong*)r)[3] < ((cl_ulong global*)bound)[3] || ((cl_ulong*)r)[3] == ((cl_ulong global*)bound)[3] && (((cl_ulong*)r)[2] < ((cl_ulong global*)bound)[2] || ((cl_ulong*)r)[2] == ((cl_ulong global*)bound)[2] && (((cl_ulong*)r)[1] < ((cl_ulong global*)bound)[1] || ((cl_ulong*)r)[1] == ((cl_ulong global*)bound)[1] && ((cl_ulong*)r)[0] < ((cl_ulong global*)bound)[0]));
 
-		if (j)//
+
+		if (j )//
 		{
 			cl_uint oldC = atomic_inc(vCount);
 

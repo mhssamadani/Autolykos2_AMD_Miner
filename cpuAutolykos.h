@@ -48,13 +48,14 @@ public:
 	~AutolykosAlg();
 	int m_iAlgVer;
 	void Blake2b256(const char * in, const int len, uint8_t * output, char * outstr);
-	void GenIdex(const char * in, const int len, uint32_t* index);
+	void GenIdex(const char * in, const int len, uint32_t* index, uint64_t N_LEN);
 	void hashFn(const char * in, const int len, uint8_t * output);
 	bool RunAlg(
 		uint8_t *B_mes,
 		uint8_t *nonce,
 		uint8_t *bPool,
-		uint8_t *height
+		uint8_t *height,
+		uint64_t N_LEN
 		);
 
 private:
